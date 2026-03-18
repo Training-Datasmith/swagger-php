@@ -51,8 +51,6 @@ class Generator
 
     protected ?TypeResolverInterface $typeResolver = null;
 
-    protected ?LoggerInterface $logger = null;
-
     /**
      * OpenApi version override.
      *
@@ -63,10 +61,8 @@ class Generator
      */
     protected ?string $version = null;
 
-    public function __construct(?LoggerInterface $logger = null)
+    public function __construct(protected ?LoggerInterface $logger = null)
     {
-        $this->logger = $logger;
-
         $this->setAliases(self::DEFAULT_ALIASES);
         $this->setNamespaces(self::DEFAULT_NAMESPACES);
     }

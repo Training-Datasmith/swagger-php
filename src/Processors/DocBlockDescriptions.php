@@ -34,8 +34,11 @@ class DocBlockDescriptions
                 // only top-level annotations
                 continue;
             }
-
-            if ($annotation instanceof OA\Parameter || $annotation instanceof OA\Property) {
+            if ($annotation instanceof OA\Parameter) {
+                // they have their dedicated processor
+                continue;
+            }
+            if ($annotation instanceof OA\Property) {
                 // they have their dedicated processor
                 continue;
             }

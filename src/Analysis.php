@@ -43,17 +43,14 @@ class Analysis
      */
     public ?OA\OpenApi $openapi = null;
 
-    public ?Context $context = null;
-
     /**
      * @param list<OA\AbstractAnnotation> $annotations
      */
-    public function __construct(array $annotations = [], ?Context $context = null)
+    public function __construct(array $annotations = [], public ?Context $context = null)
     {
         $this->annotations = new \SplObjectStorage();
-        $this->context = $context;
 
-        $this->addAnnotations($annotations, $context);
+        $this->addAnnotations($annotations, $this->context);
     }
 
     public function addAnnotation(OA\AbstractAnnotation $annotation, Context $context): void
@@ -414,10 +411,18 @@ class Analysis
         $annotations = [$root];
 
         foreach (get_object_vars($root) as $field => $value) {
-            if (null === $value || Generator::isDefault($value) || is_scalar($value) || in_array($field, $root::$_blacklist)) {
+            if (null === $value) {
                 continue;
             }
-
+            if (Generator::isDefault($value)) {
+                continue;
+            }
+            if (is_scalar($value)) {
+                continue;
+            }
+            if (in_array($field, $root::$_blacklist)) {
+                continue;
+            }
             if ($value instanceof OA\AbstractAnnotation) {
                 $annotations = array_merge($annotations, $this->collectAnnotations($value));
             } elseif (is_array($value)) {

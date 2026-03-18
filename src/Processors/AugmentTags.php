@@ -15,15 +15,12 @@ use OpenApi\Generator;
  */
 class AugmentTags
 {
-    /** @var array<string> */
-    protected array $whitelist;
-
-    protected bool $withDescription;
-
-    public function __construct(array $whitelist = [], bool $withDescription = true)
+    public function __construct(
+        /** @var array<string> */
+        protected array $whitelist = [],
+        protected bool $withDescription = true
+    )
     {
-        $this->whitelist = $whitelist;
-        $this->withDescription = $withDescription;
     }
 
     /**
@@ -102,13 +99,15 @@ class AugmentTags
 
         $tagsToKeep = array_merge($usedTagNames, $this->whitelist);
         foreach ($declaredTags as $tag) {
-            if (!in_array($tag->name, $tagsToKeep)) {
-                if (false !== $index = array_search($tag, $analysis->openapi->tags, true)) {
-                    $analysis->annotations->offsetUnset($tag);
-                    unset($analysis->openapi->tags[$index]);
-                    $analysis->openapi->tags = array_values($analysis->openapi->tags);
-                }
+            if (in_array($tag->name, $tagsToKeep)) {
+                continue;
             }
+            if (false === $index = array_search($tag, $analysis->openapi->tags, true)) {
+                continue;
+            }
+            $analysis->annotations->offsetUnset($tag);
+            unset($analysis->openapi->tags[$index]);
+            $analysis->openapi->tags = array_values($analysis->openapi->tags);
         }
     }
 }

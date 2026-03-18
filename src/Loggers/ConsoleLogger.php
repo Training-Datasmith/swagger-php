@@ -26,11 +26,8 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
 
     protected bool $loggedMessageAboveNotice = false;
 
-    protected bool $debug;
-
-    public function __construct(bool $debug = false)
+    public function __construct(protected bool $debug = false)
     {
-        $this->debug = $debug;
     }
 
     public function loggedMessageAboveNotice(): bool

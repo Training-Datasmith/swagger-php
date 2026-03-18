@@ -23,11 +23,8 @@ class AugmentParameters implements GeneratorAwareInterface
 
     use GeneratorAwareTrait;
 
-    protected bool $augmentOperationParameters;
-
-    public function __construct(bool $augmentOperationParameters = true)
+    public function __construct(protected bool $augmentOperationParameters = true)
     {
-        $this->augmentOperationParameters = $augmentOperationParameters;
     }
 
     public function isAugmentOperationParameters(): bool

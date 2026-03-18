@@ -44,17 +44,14 @@ use Psr\Log\LoggerInterface;
 #[\AllowDynamicProperties]
 class Context implements \Stringable
 {
-    /**
+    public function __construct(array $properties = [], /**
      * Prototypical inheritance for properties.
      */
-    protected ?Context $parent;
-
-    public function __construct(array $properties = [], ?Context $parent = null)
+    protected ?Context $parent = null)
     {
         foreach ($properties as $property => $value) {
             $this->{$property} = $value;
         }
-        $this->parent = $parent;
 
         $this->logger = $this->logger ?: new DefaultLogger();
     }

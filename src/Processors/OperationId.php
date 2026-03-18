@@ -15,11 +15,8 @@ use OpenApi\Generator;
  */
 class OperationId
 {
-    protected bool $hash;
-
-    public function __construct(bool $hash = true)
+    public function __construct(protected bool $hash = true)
     {
-        $this->hash = $hash;
     }
 
     public function isHash(): bool

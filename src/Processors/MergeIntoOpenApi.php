@@ -16,11 +16,8 @@ use OpenApi\Generator;
  */
 class MergeIntoOpenApi
 {
-    protected bool $mergeComponents;
-
-    public function __construct(bool $mergeComponents = false)
+    public function __construct(protected bool $mergeComponents = false)
     {
-        $this->mergeComponents = $mergeComponents;
     }
 
     public function isMergeComponents(): bool

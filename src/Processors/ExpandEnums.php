@@ -22,11 +22,8 @@ class ExpandEnums implements GeneratorAwareInterface
 {
     use GeneratorAwareTrait;
 
-    protected ?string $enumNames;
-
-    public function __construct(?string $enumNames = null)
+    public function __construct(protected ?string $enumNames = null)
     {
-        $this->enumNames = $enumNames;
     }
 
     public function getEnumNames(): ?string

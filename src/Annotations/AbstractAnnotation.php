@@ -295,7 +295,10 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
         // Map nested keys
         foreach (static::$_nested as $nested) {
-            if (is_string($nested) || count($nested) === 1) {
+            if (is_string($nested)) {
+                continue;
+            }
+            if (count($nested) === 1) {
                 continue;
             }
             $property = $nested[0];
@@ -492,7 +495,10 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
         // validate conflicting keys
         foreach ($this::$_nested as $annotationClass => $nested) {
-            if (is_string($nested) || count($nested) === 1) {
+            if (is_string($nested)) {
+                continue;
+            }
+            if (count($nested) === 1) {
                 continue;
             }
             $property = $nested[0];
@@ -554,7 +560,10 @@ abstract class AbstractAnnotation implements \JsonSerializable
         // validate types
         foreach ($this::$_types as $property => $type) {
             $value = $this->{$property};
-            if (Generator::isDefault($value) || $value === null) {
+            if (Generator::isDefault($value)) {
+                continue;
+            }
+            if ($value === null) {
                 continue;
             }
             if (is_string($type)) {

@@ -17,11 +17,8 @@ class CleanUnusedComponents
 {
     use Concerns\AnnotationTrait;
 
-    protected bool $enabled;
-
-    public function __construct(bool $enabled = false)
+    public function __construct(protected bool $enabled = false)
     {
-        $this->enabled = $enabled;
     }
 
     public function isEnabled(): bool

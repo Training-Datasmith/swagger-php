@@ -21,17 +21,8 @@ class PathFilter
 {
     use AnnotationTrait;
 
-    protected array $tags;
-
-    protected array $paths;
-
-    protected bool $recurseCleanup;
-
-    public function __construct(array $tags = [], array $paths = [], bool $recurseCleanup = false)
+    public function __construct(protected array $tags = [], protected array $paths = [], protected bool $recurseCleanup = false)
     {
-        $this->tags = $tags;
-        $this->paths = $paths;
-        $this->recurseCleanup = $recurseCleanup;
     }
 
     public function getTags(): array

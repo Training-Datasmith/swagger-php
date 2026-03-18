@@ -152,9 +152,8 @@ class Serializer
             if (is_string($declaration) && $declaration === $property) {
                 if (is_object($value)) {
                     return $this->doDeserialize($value, $nestedClass, $context);
-                } else {
-                    return $value;
                 }
+                return $value;
             }
 
             // property is an annotation array
@@ -192,7 +191,7 @@ class Serializer
      *
      * @return array|OA\AbstractAnnotation
      */
-    protected function doDeserializeBaseProperty($type, mixed $value, Context $context)
+    protected function doDeserializeBaseProperty(string $type, mixed $value, Context $context)
     {
         $isAnnotationClass = is_string($type) && is_subclass_of(trim($type, '[]'), OA\AbstractAnnotation::class);
 

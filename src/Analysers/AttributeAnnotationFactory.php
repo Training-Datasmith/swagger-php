@@ -16,11 +16,8 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 {
     use GeneratorAwareTrait;
 
-    protected bool $ignoreOtherAttributes = false;
-
-    public function __construct(bool $ignoreOtherAttributes = false)
+    public function __construct(protected bool $ignoreOtherAttributes = false)
     {
-        $this->ignoreOtherAttributes = $ignoreOtherAttributes;
     }
 
     public function isSupported(): bool
