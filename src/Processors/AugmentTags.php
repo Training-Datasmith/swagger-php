@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -19,8 +21,7 @@ class AugmentTags
         /** @var array<string> */
         protected array $whitelist = [],
         protected bool $withDescription = true
-    )
-    {
+    ) {
     }
 
     /**

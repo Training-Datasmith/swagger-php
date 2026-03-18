@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Openapi\Snippets\Cookbook\SecureEndpoint;
 
 use OpenApi\Attributes as OA;

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -12,7 +14,8 @@ use OpenApi\Tests\Fixtures\Parser\AsTrait as Aliased;
 #[OAT\Schema(schema: 'hello')]
 trait HelloTrait
 {
-    use OtherTrait, Aliased;
+    use OtherTrait;
+    use Aliased;
 
     #[OAT\Property]
     public $greet = 'Hello!';

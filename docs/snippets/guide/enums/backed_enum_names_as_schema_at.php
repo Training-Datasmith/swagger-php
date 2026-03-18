@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Openapi\Snippets\Enums\BackedNameAsSchema;
 
 use OpenApi\Attributes as OA;

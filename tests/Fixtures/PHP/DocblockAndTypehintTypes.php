@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -143,8 +145,7 @@ class DocblockAndTypehintTypes
         bool                $bool = true,
         #[OAT\Property(example: 'My value')]
         public string|array $mixedUnion = [],
-    )
-    {
+    ) {
     }
 
     /**
@@ -202,9 +203,8 @@ class DocblockAndTypehintTypes
         array $paramDateTimeList,
         #[OAT\Property]
         array $paramStringList,
-    ): void
-        {
-        }
+    ): void {
+    }
 
     /**
      * @param ?string[] $blah_values

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -135,7 +137,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                 }
                 $possibleParent = $annotations[$ii];
                 if ($isParent($annotation, $possibleParent)) {
-                    $mergedIntoParent = true; //
+                    $mergedIntoParent = true;
                     $possibleParent->merge([$annotation]);
                 }
             }

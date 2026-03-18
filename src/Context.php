@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -47,7 +49,7 @@ class Context implements \Stringable
     public function __construct(array $properties = [], /**
      * Prototypical inheritance for properties.
      */
-    protected ?Context $parent = null)
+        protected ?Context $parent = null)
     {
         foreach ($properties as $property => $value) {
             $this->{$property} = $value;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Openapi\Snippets\Enums\AsSchema;
 
 use OpenApi\Annotations as OA;

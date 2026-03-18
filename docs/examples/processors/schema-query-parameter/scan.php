@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use OpenApi\Generator;
 use OpenApi\Pipeline;
 use OpenApi\Processors\BuildPaths;
