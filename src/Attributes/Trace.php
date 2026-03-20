@@ -1,17 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Attributes;
 
-namespace OpenApi\Attributes;
-
-use OpenApi\Annotations as OA;
-
+use Open_Api\Annotations as OA;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Trace extends OA\Trace
 {
-    use OperationTrait;
+    use Operation_Trait;
 }

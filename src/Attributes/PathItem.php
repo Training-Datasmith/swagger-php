@@ -1,18 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Attributes;
 
-namespace OpenApi\Attributes;
-
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class PathItem extends OA\PathItem
+class Path_Item extends OA\Path_Item
 {
     /**
      * @param string|class-string|object|null $ref
@@ -37,19 +34,11 @@ class PathItem extends OA\PathItem
         ?Query $query = null,
         ?array $servers = null,
         ?array $parameters = null,
-
         // abstract annotation
         ?array $x = null,
         ?array $attachables = null
-    ) {
-        parent::__construct([
-            'path' => $path ?? Generator::UNDEFINED,
-            'ref' => $ref ?? Generator::UNDEFINED,
-            'summary' => $summary,
-            'description' => $description,
-            'x' => $x ?? Generator::UNDEFINED,
-            'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($get, $put, $post, $delete, $options, $head, $patch, $trace, $query, $servers, $parameters),
-        ]);
+    )
+    {
+        parent::__construct(['path' => $path ?? Generator::UNDEFINED, 'ref' => $ref ?? Generator::UNDEFINED, 'summary' => $summary, 'description' => $description, 'x' => $x ?? Generator::UNDEFINED, 'attachables' => $attachables ?? Generator::UNDEFINED, 'value' => $this->combine($get, $put, $post, $delete, $options, $head, $patch, $trace, $query, $servers, $parameters)]);
     }
 }

@@ -1,17 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Processors;
 
-namespace OpenApi\Processors;
-
-use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-
+use Open_Api\Analysis;
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
 /**
  * Iterate over the chain of ancestors of a schema and:
  * - if the ancestor has a schema
@@ -19,29 +16,26 @@ use OpenApi\Generator;
  * - else
  *   => merge ancestor properties into the schema.
  */
-class ExpandClasses
+class Expand_Classes
 {
-    use Concerns\MergePropertiesTrait;
-
+    use Concerns\Merge_Properties_Trait;
     public function __invoke(Analysis $analysis): void
     {
-        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
-
+        $schemas = $analysis->get_annotations_of_type(OA\Schema::class, true);
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {
-                $ancestors = $analysis->getSuperClasses($schema->_context->fullyQualifiedName($schema->_context->class));
+                $ancestors = $analysis->get_super_classes($schema->_context->fully_qualified_name($schema->_context->class));
                 $existing = [];
                 foreach ($ancestors as $ancestor) {
-                    $ancestorSchema = $analysis->getAnnotationForSource($ancestor['context']->fullyQualifiedName($ancestor['class']));
-                    if ($ancestorSchema) {
-                        $refPath = Generator::isDefault($ancestorSchema->schema) ? $ancestor['class'] : $ancestorSchema->schema;
-                        $this->inheritFrom($analysis, $schema, $ancestorSchema, $refPath, $ancestor['context']);
-
+                    $ancestor_schema = $analysis->get_annotation_for_source($ancestor['context']->fully_qualified_name($ancestor['class']));
+                    if ($ancestor_schema) {
+                        $ref_path = Generator::is_default($ancestor_schema->schema) ? $ancestor['class'] : $ancestor_schema->schema;
+                        $this->inherit_from($analysis, $schema, $ancestor_schema, $ref_path, $ancestor['context']);
                         // one ancestor is enough
                         break;
                     } else {
-                        $this->mergeMethods($schema, $ancestor, $existing);
-                        $this->mergeProperties($schema, $ancestor, $existing);
+                        $this->merge_methods($schema, $ancestor, $existing);
+                        $this->merge_properties($schema, $ancestor, $existing);
                     }
                 }
             }

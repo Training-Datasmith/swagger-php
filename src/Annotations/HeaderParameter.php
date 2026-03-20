@@ -1,21 +1,18 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Annotations as OA;
-
+use Open_Api\Annotations as OA;
 /**
  * A <code>@OA\Request</code> header parameter.
  *
  * @Annotation
  */
-class HeaderParameter extends Parameter
+class Header_Parameter extends Parameter
 {
     /**
      * @inheritdoc

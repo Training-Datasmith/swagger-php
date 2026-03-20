@@ -1,21 +1,18 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * Sets a default value to the parameter. The type of the value depends on the defined type.
  *
  * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html)
  */
-trait JsonSchemaTrait
+trait Json_Schema_Trait
 {
     /**
      * Sets a default value to the parameter.
@@ -25,14 +22,12 @@ trait JsonSchemaTrait
      * @var mixed
      */
     public $default = Generator::UNDEFINED;
-
     /**
      * The maximum value allowed for a numeric property. This value must be a number.
      *
      * @var int|float
      */
     public $maximum = Generator::UNDEFINED;
-
     /**
      * A boolean indicating whether the maximum value is excluded from the set of valid values.
      *
@@ -40,15 +35,13 @@ trait JsonSchemaTrait
      *
      * @var bool|int|float
      */
-    public $exclusiveMaximum = Generator::UNDEFINED;
-
+    public $exclusive_maximum = Generator::UNDEFINED;
     /**
      * The minimum value allowed for a numeric property. This value must be a number.
      *
      * @var int|float
      */
     public $minimum = Generator::UNDEFINED;
-
     /**
      * A boolean indicating whether the minimum value is excluded from the set of valid values.
      *
@@ -56,8 +49,7 @@ trait JsonSchemaTrait
      *
      * @var bool|int|float
      */
-    public $exclusiveMinimum = Generator::UNDEFINED;
-
+    public $exclusive_minimum = Generator::UNDEFINED;
     /**
      * The maximum length of a string property.
      *
@@ -66,8 +58,7 @@ trait JsonSchemaTrait
      *
      * @var int
      */
-    public $maxLength = Generator::UNDEFINED;
-
+    public $max_length = Generator::UNDEFINED;
     /**
      * The minimum length of a string property.
      *
@@ -76,8 +67,7 @@ trait JsonSchemaTrait
      *
      * @var int
      */
-    public $minLength = Generator::UNDEFINED;
-
+    public $min_length = Generator::UNDEFINED;
     /**
      * The maximum number of items allowed in an array property.
      *
@@ -86,8 +76,7 @@ trait JsonSchemaTrait
      *
      * @var int
      */
-    public $maxItems = Generator::UNDEFINED;
-
+    public $max_items = Generator::UNDEFINED;
     /**
      * The minimum number of items allowed in an array property.
      *
@@ -96,8 +85,7 @@ trait JsonSchemaTrait
      *
      * @var int
      */
-    public $minItems = Generator::UNDEFINED;
-
+    public $min_items = Generator::UNDEFINED;
     /**
      * A boolean value indicating whether all items in an array property must be unique.
      *
@@ -105,8 +93,7 @@ trait JsonSchemaTrait
      *
      * @var bool
      */
-    public $uniqueItems = Generator::UNDEFINED;
-
+    public $unique_items = Generator::UNDEFINED;
     /**
      * A list of allowable values for a property.
      *
@@ -116,65 +103,51 @@ trait JsonSchemaTrait
      * @var list<string|int|float|bool|\UnitEnum>|class-string
      */
     public $enum = Generator::UNDEFINED;
-
     /**
      * @var mixed
      */
     public $not = Generator::UNDEFINED;
-
     /**
      * @var bool|AdditionalProperties
      */
-    public $additionalProperties = Generator::UNDEFINED;
-
+    public $additional_properties = Generator::UNDEFINED;
     /**
      * @var array
      */
-    public $additionalItems = Generator::UNDEFINED;
-
+    public $additional_items = Generator::UNDEFINED;
     /**
      * @var array
      */
     public $contains = Generator::UNDEFINED;
-
     /**
      * @var array
      */
-    public $patternProperties = Generator::UNDEFINED;
-
+    public $pattern_properties = Generator::UNDEFINED;
     /**
      * @var array
      */
-    public $unevaluatedProperties = Generator::UNDEFINED;
-
+    public $unevaluated_properties = Generator::UNDEFINED;
     /**
      * @var mixed
      */
     public $dependencies = Generator::UNDEFINED;
-
     /**
      * @var mixed
      */
-    public $propertyNames = Generator::UNDEFINED;
-
+    public $property_names = Generator::UNDEFINED;
     /**
      * @var mixed
      * @since OpenAPI 3.1.0
      */
     public $const = Generator::UNDEFINED;
 }
-
 /*
  * Template code to be used by all attributes extending OA\Schema.
  *
  *
 ** TYPE-HINTS:
-
      * @param list<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
-
-
 ** PARAMETERS:
-
         // JSON Schema
         mixed $default = Generator::UNDEFINED,
         int|float|null $maximum = null,
@@ -196,10 +169,7 @@ trait JsonSchemaTrait
         mixed $dependencies = Generator::UNDEFINED,
         mixed $propertyNames = Generator::UNDEFINED,
         mixed $const = Generator::UNDEFINED,
-
-
 ** PARENT-PARAMS:
-
             // JSON Schema
             'default' => $default,
             'maximum' => $maximum ?? Generator::UNDEFINED,
@@ -221,5 +191,4 @@ trait JsonSchemaTrait
             'dependencies' => $dependencies,
             'propertyNames' => $propertyNames,
             'const' => $const,
-
 */

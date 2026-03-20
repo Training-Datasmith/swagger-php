@@ -1,104 +1,93 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Processors;
 
-namespace OpenApi\Processors;
-
-use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-
-class AugmentRefs
+use Open_Api\Analysis;
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
+class Augment_Refs
 {
-    use Concerns\RefTrait;
-
+    use Concerns\Ref_Trait;
     public function __invoke(Analysis $analysis): void
     {
-        $this->resolveAllOfRefs($analysis);
-        $this->resolveFQCNRefs($analysis);
-        $this->removeDuplicateRefs($analysis);
+        $this->resolve_all_of_refs($analysis);
+        $this->resolve_fqcn_refs($analysis);
+        $this->remove_duplicate_refs($analysis);
     }
-
     /**
      * Update refs broken due to <code>allOf</code> augmenting.
      */
-    protected function resolveAllOfRefs(Analysis $analysis): void
+    protected function resolve_all_of_refs(Analysis $analysis): void
     {
-        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
-
+        $schemas = $analysis->get_annotations_of_type(OA\Schema::class);
         // ref rewriting
-        $updatedRefs = [];
+        $updated_refs = [];
         foreach ($schemas as $schema) {
-            if (!Generator::isDefault($schema->allOf)) {
+            if (!Generator::is_default($schema->all_of)) {
                 // do we have to keep track of property refs that need updating?
-                foreach ($schema->allOf as $ii => $allOfSchema) {
-                    if (!Generator::isDefault($allOfSchema->properties)) {
-                        $updatedRefs[OA\Components::ref($schema->schema . '/properties', false)] = OA\Components::ref($schema->schema . '/allOf/' . $ii . '/properties', false);
+                foreach ($schema->all_of as $ii => $all_of_schema) {
+                    if (!Generator::is_default($all_of_schema->properties)) {
+                        $updated_refs[OA\Components::ref($schema->schema . '/properties', false)] = OA\Components::ref($schema->schema . '/allOf/' . $ii . '/properties', false);
                         break;
                     }
                 }
             }
         }
-
-        if ($updatedRefs) {
+        if ($updated_refs) {
             foreach ($analysis->annotations as $annotation) {
-                if (property_exists($annotation, 'ref') && !Generator::isDefault($annotation->ref) && $annotation->ref !== null) {
-                    foreach ($updatedRefs as $origRef => $updatedRef) {
-                        if (str_starts_with((string) $annotation->ref, $origRef)) {
-                            $annotation->ref = str_replace($origRef, $updatedRef, (string) $annotation->ref);
+                if (property_exists($annotation, 'ref') && !Generator::is_default($annotation->ref) && $annotation->ref !== null) {
+                    foreach ($updated_refs as $orig_ref => $updated_ref) {
+                        if (str_starts_with((string) $annotation->ref, $orig_ref)) {
+                            $annotation->ref = str_replace($orig_ref, $updated_ref, (string) $annotation->ref);
                         }
                     }
                 }
             }
         }
     }
-
-    protected function resolveFQCNRefs(Analysis $analysis): void
+    protected function resolve_fqcn_refs(Analysis $analysis): void
     {
-        $annotations = $analysis->getAnnotationsOfType(OA\Components::componentTypes());
-
+        $annotations = $analysis->get_annotations_of_type(OA\Components::component_types());
         foreach ($annotations as $annotation) {
-            if (property_exists($annotation, 'ref') && !Generator::isDefault($annotation->ref) && is_string($annotation->ref) && !$this->isRef($annotation->ref)) {
+            if (property_exists($annotation, 'ref') && !Generator::is_default($annotation->ref) && is_string($annotation->ref) && !$this->is_ref($annotation->ref)) {
                 // check if we can resolve the ref to a component
                 $resolved = false;
-                foreach (OA\Components::componentTypes() as $type) {
-                    if ($refSchema = $analysis->getAnnotationForSource($annotation->ref, $type)) {
+                foreach (OA\Components::component_types() as $type) {
+                    if ($ref_schema = $analysis->get_annotation_for_source($annotation->ref, $type)) {
                         $resolved = true;
-                        $annotation->ref = OA\Components::ref($refSchema);
+                        $annotation->ref = OA\Components::ref($ref_schema);
                     }
                 }
-                if (!$resolved && ($refAnnotation = $analysis->getAnnotationForSource($annotation->ref, $annotation::class))) {
-                    $annotation->ref = OA\Components::ref($refAnnotation);
+                if (!$resolved && $ref_annotation = $analysis->get_annotation_for_source($annotation->ref, $annotation::class)) {
+                    $annotation->ref = OA\Components::ref($ref_annotation);
                 }
             }
         }
     }
-
-    protected function removeDuplicateRefs(Analysis $analysis): void
+    protected function remove_duplicate_refs(Analysis $analysis): void
     {
-        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
-
+        $schemas = $analysis->get_annotations_of_type(OA\Schema::class);
         foreach ($schemas as $schema) {
-            if (!Generator::isDefault($schema->allOf)) {
+            if (!Generator::is_default($schema->all_of)) {
                 $refs = [];
                 $dupes = [];
-                foreach ($schema->allOf as $ii => $allOfSchema) {
-                    if (!Generator::isDefault($allOfSchema->ref)) {
-                        if (in_array($allOfSchema->ref, $refs)) {
-                            $dupes[] = $allOfSchema->ref;
-                            $analysis->annotations->offsetUnset($allOfSchema);
-                            unset($schema->allOf[$ii]);
+                foreach ($schema->all_of as $ii => $all_of_schema) {
+                    if (!Generator::is_default($all_of_schema->ref)) {
+                        if (in_array($all_of_schema->ref, $refs)) {
+                            $dupes[] = $all_of_schema->ref;
+                            $analysis->annotations->offsetUnset($all_of_schema);
+                            unset($schema->all_of[$ii]);
                             continue;
                         }
-                        $refs[] = $allOfSchema->ref;
+                        $refs[] = $all_of_schema->ref;
                     }
                 }
                 if ($dupes) {
-                    $schema->allOf = array_values($schema->allOf);
+                    $schema->all_of = array_values($schema->all_of);
                 }
             }
         }

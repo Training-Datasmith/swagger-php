@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
-
-namespace OpenApi\Annotations;
+namespace Open_Api\Annotations;
 
 /**
  * @since OpenAPI 3.2.0
@@ -19,11 +17,8 @@ class Query extends Operation
      * @inheritdoc
      */
     public $method = 'query';
-
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        PathItem::class,
-    ];
+    public static $_parents = [Path_Item::class];
 }

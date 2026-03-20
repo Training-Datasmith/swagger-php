@@ -1,16 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Attributes;
 
-namespace OpenApi\Attributes;
-
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Encoding extends OA\Encoding
 {
@@ -21,25 +18,16 @@ class Encoding extends OA\Encoding
      */
     public function __construct(
         ?string $property = null,
-        ?string $contentType = null,
+        ?string $content_type = null,
         ?array $headers = null,
         ?string $style = null,
         ?bool $explode = null,
-        ?bool $allowReserved = null,
-
+        ?bool $allow_reserved = null,
         // abstract annotation
         ?array $x = null,
         ?array $attachables = null
-    ) {
-        parent::__construct([
-            'property' => $property ?? Generator::UNDEFINED,
-            'contentType' => $contentType ?? Generator::UNDEFINED,
-            'style' => $style ?? Generator::UNDEFINED,
-            'explode' => $explode ?? Generator::UNDEFINED,
-            'allowReserved' => $allowReserved ?? Generator::UNDEFINED,
-            'x' => $x ?? Generator::UNDEFINED,
-            'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($headers),
-        ]);
+    )
+    {
+        parent::__construct(['property' => $property ?? Generator::UNDEFINED, 'contentType' => $content_type ?? Generator::UNDEFINED, 'style' => $style ?? Generator::UNDEFINED, 'explode' => $explode ?? Generator::UNDEFINED, 'allowReserved' => $allow_reserved ?? Generator::UNDEFINED, 'x' => $x ?? Generator::UNDEFINED, 'attachables' => $attachables ?? Generator::UNDEFINED, 'value' => $this->combine($headers)]);
     }
 }

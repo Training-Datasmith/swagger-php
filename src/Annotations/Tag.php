@@ -1,21 +1,18 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * @see [Tag Object](https://spec.openapis.org/oas/v3.1.1.html#tag-object)
  *
  * @Annotation
  */
-class Tag extends AbstractAnnotation
+class Tag extends Abstract_Annotation
 {
     /**
      * The name of the tag.
@@ -23,14 +20,12 @@ class Tag extends AbstractAnnotation
      * @var string
      */
     public $name = Generator::UNDEFINED;
-
     /**
      * A short description for the tag. GFM syntax can be used for rich text representation.
      *
      * @var string
      */
     public $description = Generator::UNDEFINED;
-
     /**
      * A short summary for display purposes.
      *
@@ -38,14 +33,12 @@ class Tag extends AbstractAnnotation
      * @var string
      */
     public $summary = Generator::UNDEFINED;
-
     /**
      * Additional external documentation for this tag.
      *
      * @var ExternalDocumentation
      */
-    public $externalDocs = Generator::UNDEFINED;
-
+    public $external_docs = Generator::UNDEFINED;
     /**
      * Name of the parent tag.
      *
@@ -53,7 +46,6 @@ class Tag extends AbstractAnnotation
      * @var string
      */
     public $parent = Generator::UNDEFINED;
-
     /**
      * Machine-readable category.
      *
@@ -61,48 +53,30 @@ class Tag extends AbstractAnnotation
      * @var string
      */
     public $kind = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
     public static $_required = ['name'];
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'name' => 'string',
-        'description' => 'string',
-        'summary' => 'string',
-        'parent' => 'string',
-        'kind' => 'string',
-    ];
-
+    public static $_types = ['name' => 'string', 'description' => 'string', 'summary' => 'string', 'parent' => 'string', 'kind' => 'string'];
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        OpenApi::class,
-    ];
-
+    public static $_parents = [Open_Api::class];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        ExternalDocumentation::class => 'externalDocs',
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [External_Documentation::class => 'externalDocs', Attachable::class => ['attachables']];
     public function jsonSerialize(): \stdClass
     {
         $data = parent::jsonSerialize();
-
-        if ($this->_context->isVersion(['3.0.x', '3.1.x'])) {
+        if ($this->_context->is_version(['3.0.x', '3.1.x'])) {
             unset($data->summary);
             unset($data->parent);
             unset($data->kind);
         }
-
         return $data;
     }
 }

@@ -1,15 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * Contact information for the exposed API.
  *
@@ -17,7 +14,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class Contact extends AbstractAnnotation
+class Contact extends Abstract_Annotation
 {
     /**
      * The identifying name of the contact person/organization.
@@ -25,41 +22,28 @@ class Contact extends AbstractAnnotation
      * @var string
      */
     public $name = Generator::UNDEFINED;
-
     /**
      * The URL pointing to the contact information.
      *
      * @var string
      */
     public $url = Generator::UNDEFINED;
-
     /**
      * The email address of the contact person/organization.
      *
      * @var string
      */
     public $email = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'name' => 'string',
-        'url' => 'string',
-        'email' => 'string',
-    ];
-
+    public static $_types = ['name' => 'string', 'url' => 'string', 'email' => 'string'];
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        Info::class,
-    ];
-
+    public static $_parents = [Info::class];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Attachable::class => ['attachables'],
-    ];
+    public static $_nested = [Attachable::class => ['attachables']];
 }

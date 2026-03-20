@@ -1,28 +1,19 @@
 <?php
 
-declare(strict_types=1);
-
-namespace OpenApi;
+declare (strict_types=1);
+namespace Open_Api;
 
 use Symfony\Component\Finder\Finder;
-
 /**
  * Custom Symfony `Finder` that understands `swagger-php` CLI options.
  */
-class SourceFinder extends Finder
+class Source_Finder extends Finder
 {
     public function __construct(string|array $directory, null|array|string $exclude = null, string $pattern = '*.php')
     {
         parent::__construct();
-
-        $this
-            ->sortByName()
-            ->files()
-            ->followLinks()
-            ->name($pattern);
-
+        $this->sort_by_name()->files()->follow_links()->name($pattern);
         $directories = (array) $directory;
-
         foreach ($directories as $path) {
             if (is_file($path)) {
                 $this->append([$path]);
@@ -30,12 +21,10 @@ class SourceFinder extends Finder
                 $this->in($path);
             }
         }
-
         foreach ((array) $exclude as $path) {
-            $this->notPath($this->getRelativePath($path, $directories));
+            $this->not_path($this->get_relative_path($path, $directories));
         }
     }
-
     /**
      * Turns the given $fullPath into a relative path based on $basePaths, which can either
      * be a single string path, or a list of possible paths. If a list is given, the first
@@ -48,18 +37,16 @@ class SourceFinder extends Finder
      *
      * In particular, leading and trailing slashes are removed.
      */
-    private function getRelativePath(string $fullPath, array $directories): string
+    private function get_relative_path(string $full_path, array $directories): string
     {
         foreach ($directories as $directory) {
-            if (str_starts_with($fullPath, (string) $directory)) {
-                $relativePath = substr($fullPath, strlen((string) $directory));
-
-                if ($relativePath !== '' && $relativePath !== '0') {
-                    return trim($relativePath, '/');
+            if (str_starts_with($full_path, (string) $directory)) {
+                $relative_path = substr($full_path, strlen((string) $directory));
+                if ($relative_path !== '' && $relative_path !== '0') {
+                    return trim($relative_path, '/');
                 }
             }
         }
-
-        return $fullPath;
+        return $full_path;
     }
 }

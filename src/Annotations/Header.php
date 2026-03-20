@@ -1,20 +1,18 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * @see [Header Object](https://spec.openapis.org/oas/v3.1.1.html#header-object)
  *
  * @Annotation
  */
-class Header extends AbstractAnnotation
+class Header extends Abstract_Annotation
 {
     /**
      * The relative or absolute path to the endpoint.
@@ -24,12 +22,10 @@ class Header extends AbstractAnnotation
      * @var string|class-string|object
      */
     public $ref = Generator::UNDEFINED;
-
     /**
      * @var string
      */
     public $header = Generator::UNDEFINED;
-
     /**
      * A brief description of the parameter.
      *
@@ -39,26 +35,22 @@ class Header extends AbstractAnnotation
      * @var string
      */
     public $description = Generator::UNDEFINED;
-
     /**
      * @var bool
      */
     public $required = Generator::UNDEFINED;
-
     /**
      * Schema object.
      *
      * @var Schema
      */
     public $schema = Generator::UNDEFINED;
-
     /**
      * Specifies that a parameter is deprecated and SHOULD be transitioned out of usage.
      *
      * @var bool
      */
     public $deprecated = Generator::UNDEFINED;
-
     /**
      * Sets the ability to pass empty-valued parameters.
      *
@@ -70,35 +62,21 @@ class Header extends AbstractAnnotation
      *
      * @var bool
      */
-    public $allowEmptyValue = Generator::UNDEFINED;
-
+    public $allow_empty_value = Generator::UNDEFINED;
     /**
      * @inheritdoc
      */
     public static $_required = ['header', 'schema'];
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'header' => 'string',
-        'description' => 'string',
-    ];
-
+    public static $_types = ['header' => 'string', 'description' => 'string'];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Schema::class => 'schema',
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [Schema::class => 'schema', Attachable::class => ['attachables']];
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        Encoding::class,
-        Components::class,
-        Response::class,
-    ];
+    public static $_parents = [Encoding::class, Components::class, Response::class];
 }

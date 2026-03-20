@@ -1,42 +1,28 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Loggers;
 
-namespace OpenApi\Loggers;
-
-use Psr\Log\AbstractLogger;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
-
-class ConsoleLogger extends AbstractLogger implements LoggerInterface
+use Psr\Log\Abstract_Logger;
+use Psr\Log\Logger_Interface;
+use Psr\Log\Log_Level;
+class Console_Logger extends Abstract_Logger implements Logger_Interface
 {
-    public const COLOR_ERROR = "\033[31m";
-
-    public const COLOR_WARNING = "\033[33m";
-
-    public const COLOR_STOP = "\033[0m";
-
-    private const LOG_LEVELS_UP_TO_NOTICE = [
-        LogLevel::DEBUG,
-        LogLevel::INFO,
-        LogLevel::NOTICE,
-    ];
-
-    protected bool $loggedMessageAboveNotice = false;
-
+    public const COLOR_ERROR = "\x1b[31m";
+    public const COLOR_WARNING = "\x1b[33m";
+    public const COLOR_STOP = "\x1b[0m";
+    private const LOG_LEVELS_UP_TO_NOTICE = [Log_Level::DEBUG, Log_Level::INFO, Log_Level::NOTICE];
+    protected bool $logged_message_above_notice = false;
     public function __construct(protected bool $debug = false)
     {
     }
-
-    public function loggedMessageAboveNotice(): bool
+    public function logged_message_above_notice(): bool
     {
-        return $this->loggedMessageAboveNotice;
+        return $this->logged_message_above_notice;
     }
-
     /**
      * @param string            $level
      * @param string|\Exception $message
@@ -48,42 +34,38 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
         $color = '';
         // level adjustments
         switch ($level) {
-            case LogLevel::DEBUG:
+            case Log_Level::DEBUG:
                 if (!$this->debug) {
                     return;
                 }
                 $prefix = 'Debug: ';
-                // no break
-            case LogLevel::WARNING:
-                $prefix = $prefix ?: ($context['prefix'] ?? 'Warning: ');
+            // no break
+            case Log_Level::WARNING:
+                $prefix = $prefix ?: $context['prefix'] ?? 'Warning: ';
                 $color = static::COLOR_WARNING;
                 break;
-            case LogLevel::ERROR:
+            case Log_Level::ERROR:
                 $prefix = $context['prefix'] ?? 'Error: ';
                 $color = static::COLOR_ERROR;
                 break;
         }
         $stop = empty($color) ? '' : static::COLOR_STOP;
-
         if (!in_array($level, self::LOG_LEVELS_UP_TO_NOTICE, strict: true)) {
-            $this->loggedMessageAboveNotice = true;
+            $this->logged_message_above_notice = true;
         }
-
         /** @var ?\Exception $exception */
         $exception = $context['exception'] ?? null;
         if ($message instanceof \Exception) {
             $exception = $message;
-            $message = $exception->getMessage();
+            $message = $exception->get_message();
         }
-
-        $logLine = sprintf('%s%s%s%s', $color, $prefix, $message, $stop);
-        error_log($logLine);
-
+        $log_line = sprintf('%s%s%s%s', $color, $prefix, $message, $stop);
+        error_log($log_line);
         if ($this->debug) {
             if ($exception) {
-                error_log($exception->getTraceAsString());
-            } elseif ($logLine !== '' && $logLine !== '0') {
-                $stack = explode(PHP_EOL, (new \Exception())->getTraceAsString());
+                error_log($exception->get_trace_as_string());
+            } elseif ($log_line !== '' && $log_line !== '0') {
+                $stack = explode(PHP_EOL, (new \Exception())->get_trace_as_string());
                 // self
                 array_shift($stack);
                 // AbstractLogger

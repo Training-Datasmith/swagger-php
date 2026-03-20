@@ -1,16 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Analysis;
-use OpenApi\Generator;
-
+use Open_Api\Analysis;
+use Open_Api\Generator;
 /**
  * Describes a single response from an API Operation, including design-time,
  * static links to operations based on the response.
@@ -19,7 +16,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class Response extends AbstractAnnotation
+class Response extends Abstract_Annotation
 {
     /**
      * The relative or absolute path to a response.
@@ -29,7 +26,6 @@ class Response extends AbstractAnnotation
      * @var string|class-string|object
      */
     public $ref = Generator::UNDEFINED;
-
     /**
      * The key into Operations->responses array.
      *
@@ -38,7 +34,6 @@ class Response extends AbstractAnnotation
      * @var string|int
      */
     public $response = Generator::UNDEFINED;
-
     /**
      * A short description of the response.
      *
@@ -47,7 +42,6 @@ class Response extends AbstractAnnotation
      * @var string
      */
     public $description = Generator::UNDEFINED;
-
     /**
      * Maps a header name to its definition.
      *
@@ -60,7 +54,6 @@ class Response extends AbstractAnnotation
      * @var list<Header>
      */
     public $headers = Generator::UNDEFINED;
-
     /**
      * A map containing descriptions of potential response payloads.
      *
@@ -72,7 +65,6 @@ class Response extends AbstractAnnotation
      * @var MediaType|JsonContent|XmlContent|Attachable|array<MediaType|JsonContent|XmlContent|Attachable>
      */
     public $content = Generator::UNDEFINED;
-
     /**
      * A map of operations links that can be followed from the response.
      *
@@ -82,50 +74,26 @@ class Response extends AbstractAnnotation
      * @var list<Link>
      */
     public $links = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'description' => 'string',
-    ];
-
+    public static $_types = ['description' => 'string'];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        MediaType::class => ['content', 'mediaType'],
-        Header::class => ['headers', 'header'],
-        Link::class => ['links', 'link'],
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [Media_Type::class => ['content', 'mediaType'], Header::class => ['headers', 'header'], Link::class => ['links', 'link'], Attachable::class => ['attachables']];
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        Components::class,
-        Operation::class,
-        Get::class,
-        Post::class,
-        Put::class,
-        Patch::class,
-        Delete::class,
-        Head::class,
-        Options::class,
-        Trace::class,
-    ];
-
+    public static $_parents = [Components::class, Operation::class, Get::class, Post::class, Put::class, Patch::class, Delete::class, Head::class, Options::class, Trace::class];
     #[\Override]
-    public function validate(?Analysis $analysis = null, string $version = OpenApi::DEFAULT_VERSION, ?object $context = null): bool
+    public function validate(?Analysis $analysis = null, string $version = Open_Api::DEFAULT_VERSION, ?object $context = null): bool
     {
-        $isValid = parent::validate($analysis, $version, $context);
-
-        if (Generator::isDefault($this->description) && Generator::isDefault($this->ref)) {
+        $is_valid = parent::validate($analysis, $version, $context);
+        if (Generator::is_default($this->description) && Generator::is_default($this->ref)) {
             $this->_context->logger->warning($this->identity() . ' One of description or ref is required in ' . $this->_context);
-            $isValid = false;
+            $is_valid = false;
         }
-
-        return $isValid;
+        return $is_valid;
     }
 }

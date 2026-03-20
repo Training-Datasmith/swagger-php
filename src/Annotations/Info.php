@@ -1,15 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * The object provides metadata about the API.
  *
@@ -19,7 +16,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class Info extends AbstractAnnotation
+class Info extends Abstract_Annotation
 {
     /**
      * The title of the application.
@@ -27,7 +24,6 @@ class Info extends AbstractAnnotation
      * @var string
      */
     public $title = Generator::UNDEFINED;
-
     /**
      * A short description of the application.
      *
@@ -36,7 +32,6 @@ class Info extends AbstractAnnotation
      * @var string
      */
     public $description = Generator::UNDEFINED;
-
     /**
      * An URL to the Terms of Service for the API.
      *
@@ -44,57 +39,39 @@ class Info extends AbstractAnnotation
      *
      * @var string
      */
-    public $termsOfService = Generator::UNDEFINED;
-
+    public $terms_of_service = Generator::UNDEFINED;
     /**
      * The contact information for the exposed API.
      *
      * @var Contact
      */
     public $contact = Generator::UNDEFINED;
-
     /**
      * The license information for the exposed API.
      *
      * @var License
      */
     public $license = Generator::UNDEFINED;
-
     /**
      * The version of the OpenAPI document (which is distinct from the OpenAPI Specification version or the API implementation version).
      *
      * @var string
      */
     public $version = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
     public static $_required = ['title', 'version'];
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'title' => 'string',
-        'version' => 'string',
-        'description' => 'string',
-        'termsOfService' => 'string',
-    ];
-
+    public static $_types = ['title' => 'string', 'version' => 'string', 'description' => 'string', 'termsOfService' => 'string'];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Contact::class => 'contact',
-        License::class => 'license',
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [Contact::class => 'contact', License::class => 'license', Attachable::class => ['attachables']];
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        OpenApi::class,
-    ];
+    public static $_parents = [Open_Api::class];
 }

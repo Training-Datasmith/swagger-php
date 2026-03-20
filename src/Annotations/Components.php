@@ -1,15 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * Holds a set of reusable objects for different aspects of the OA.
  *
@@ -20,113 +17,86 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class Components extends AbstractAnnotation
+class Components extends Abstract_Annotation
 {
     public const COMPONENTS_PREFIX = '#/components/';
-
     /**
      * Schema reference.
      *
      * @var string
      */
     public const SCHEMA_REF = '#/components/schemas/';
-
     /**
      * Reusable Schemas.
      *
      * @var array<Schema|\OpenApi\Attributes\Schema>
      */
     public $schemas = Generator::UNDEFINED;
-
     /**
      * Reusable Responses.
      *
      * @var list<Response>
      */
     public $responses = Generator::UNDEFINED;
-
     /**
      * Reusable Parameters.
      *
      * @var list<Parameter>
      */
     public $parameters = Generator::UNDEFINED;
-
     /**
      * Reusable Examples.
      *
      * @var array<Examples>
      */
     public $examples = Generator::UNDEFINED;
-
     /**
      * Reusable Request Bodies.
      *
      * @var list<RequestBody>
      */
-    public $requestBodies = Generator::UNDEFINED;
-
+    public $request_bodies = Generator::UNDEFINED;
     /**
      * Reusable Headers.
      *
      * @var list<Header>
      */
     public $headers = Generator::UNDEFINED;
-
     /**
      * Reusable Security Schemes.
      *
      * @var list<SecurityScheme>
      */
-    public $securitySchemes = Generator::UNDEFINED;
-
+    public $security_schemes = Generator::UNDEFINED;
     /**
      * Reusable Links.
      *
      * @var list<Link>
      */
     public $links = Generator::UNDEFINED;
-
     /**
      * Reusable Callbacks.
      *
      * @var array
      */
     public $callbacks = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        OpenApi::class,
-    ];
-
+    public static $_parents = [Open_Api::class];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Response::class => ['responses', 'response'],
-        Parameter::class => ['parameters', 'parameter'],
-        PathParameter::class => ['parameters', 'parameter'],
-        RequestBody::class => ['requestBodies', 'request'],
-        Examples::class => ['examples', 'example'],
-        Header::class => ['headers', 'header'],
-        SecurityScheme::class => ['securitySchemes', 'securityScheme'],
-        Link::class => ['links', 'link'],
-        Schema::class => ['schemas', 'schema'],
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [Response::class => ['responses', 'response'], Parameter::class => ['parameters', 'parameter'], Path_Parameter::class => ['parameters', 'parameter'], Request_Body::class => ['requestBodies', 'request'], Examples::class => ['examples', 'example'], Header::class => ['headers', 'header'], Security_Scheme::class => ['securitySchemes', 'securityScheme'], Link::class => ['links', 'link'], Schema::class => ['schemas', 'schema'], Attachable::class => ['attachables']];
     /**
      * Returns a list of component annotation types.
      *
      * Each may be used as a root to resolve component refs
      */
-    public static function componentTypes(): array
+    public static function component_types(): array
     {
-        return array_filter(array_keys(self::$_nested), static fn (string $value): bool => $value !== Attachable::class);
+        return array_filter(array_keys(self::$_nested), static fn(string $value): bool => $value !== Attachable::class);
     }
-
     /**
      * Generate a <code>#/components/...</code> reference for the given annotation.
      *
@@ -136,7 +106,7 @@ class Components extends AbstractAnnotation
      */
     public static function ref($component, bool $encode = true): string
     {
-        if ($component instanceof AbstractAnnotation) {
+        if ($component instanceof Abstract_Annotation) {
             foreach (Components::$_nested as $type => $nested) {
                 // exclude attachables
                 if (2 != count($nested)) {
@@ -153,28 +123,25 @@ class Components extends AbstractAnnotation
             $type = 'schemas';
             $name = $component;
         }
-
-        return self::COMPONENTS_PREFIX . $type . '/' . ($encode ? static::refEncode((string) $name) : $name);
+        return self::COMPONENTS_PREFIX . $type . '/' . ($encode ? static::ref_encode((string) $name) : $name);
     }
-
     /**
      * Escapes the special characters "/" and "~".
      *
      * https://swagger.io/docs/specification/using-ref/
      * https://tools.ietf.org/html/rfc6901#page-3
      */
-    public static function refEncode(string $raw): string
+    public static function ref_encode(string $raw): string
     {
         return str_replace('/', '~1', str_replace('~', '~0', $raw));
     }
-
     /**
      * Converted the escaped characters "~1" and "~" back to "/" and "~".
      *
      * https://swagger.io/docs/specification/using-ref/
      * https://tools.ietf.org/html/rfc6901#page-3
      */
-    public static function refDecode(string $encoded): string
+    public static function ref_decode(string $encoded): string
     {
         return str_replace('~1', '/', str_replace('~0', '~', $encoded));
     }

@@ -1,22 +1,19 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Analysers;
 
-namespace OpenApi\Analysers;
-
-use Composer\Autoload\ClassLoader;
-
+use Composer\Autoload\Class_Loader;
 /**
  * Scans for classes/interfaces/traits.
  *
  * Relies on a <code>composer --optimized</code> run in order to utilize
  * the generated class map.
  */
-class ComposerAutoloaderScanner
+class Composer_Autoloader_Scanner
 {
     /**
      * Collect all classes/interfaces/traits known by composer.
@@ -28,8 +25,8 @@ class ComposerAutoloaderScanner
     public function scan(array $namespaces): array
     {
         $units = [];
-        if ($autoloader = static::getComposerAutoloader()) {
-            foreach (array_keys($autoloader->getClassMap()) as $unit) {
+        if ($autoloader = static::get_composer_autoloader()) {
+            foreach (array_keys($autoloader->get_class_map()) as $unit) {
                 foreach ($namespaces as $namespace) {
                     if (str_starts_with($unit, $namespace)) {
                         $units[] = $unit;
@@ -38,18 +35,15 @@ class ComposerAutoloaderScanner
                 }
             }
         }
-
         return $units;
     }
-
-    public static function getComposerAutoloader(): ?ClassLoader
+    public static function get_composer_autoloader(): ?Class_Loader
     {
         foreach (spl_autoload_functions() as $fkt) {
-            if (is_array($fkt) && $fkt[0] instanceof ClassLoader) {
+            if (is_array($fkt) && $fkt[0] instanceof Class_Loader) {
                 return $fkt[0];
             }
         }
-
         return null;
     }
 }

@@ -1,78 +1,61 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Processors;
 
-namespace OpenApi\Processors;
-
-use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
-use OpenApi\Context;
-use OpenApi\Generator;
-use OpenApi\GeneratorAwareInterface;
-use OpenApi\GeneratorAwareTrait;
-
+use Open_Api\Analysis;
+use Open_Api\Annotations as OA;
+use Open_Api\Context;
+use Open_Api\Generator;
+use Open_Api\Generator_Aware_Interface;
+use Open_Api\Generator_Aware_Trait;
 /**
  * Use the property context to extract useful information and inject that into the annotation.
  */
-class AugmentProperties implements GeneratorAwareInterface
+class Augment_Properties implements Generator_Aware_Interface
 {
-    use Concerns\DocblockTrait;
-
-    use Concerns\RefTrait;
-
-    use GeneratorAwareTrait;
-
+    use Concerns\Docblock_Trait;
+    use Concerns\Ref_Trait;
+    use Generator_Aware_Trait;
     public function __invoke(Analysis $analysis): void
     {
-        $properties = $analysis->getAnnotationsOfType(OA\Property::class);
-
+        $properties = $analysis->get_annotations_of_type(OA\Property::class);
         foreach ($properties as $property) {
             $context = $property->_context;
             $reflector = $context->reflector;
-
-            if (Generator::isDefault($property->property)) {
+            if (Generator::is_default($property->property)) {
                 $property->property = $property->_context->property;
             }
-
             if ($property->encoding instanceof OA\Encoding) {
                 $property->encoding->property = $property->property;
             }
-
-            if (Generator::isDefault($property->const) && $reflector instanceof \ReflectionClassConstant) {
-                $property->const = $reflector->getValue();
+            if (Generator::is_default($property->const) && $reflector instanceof \Reflection_Class_Constant) {
+                $property->const = $reflector->get_value();
             }
-
-            if (Generator::isDefault($property->description)) {
-                $typeAndDescription = $this->parseVarLine((string) $context->comment);
-
-                if ($typeAndDescription['description']) {
-                    $property->description = trim($typeAndDescription['description']);
-                } elseif ($this->isDocblockRoot($property)) {
-                    $property->description = $this->parseDocblock($context->comment);
+            if (Generator::is_default($property->description)) {
+                $type_and_description = $this->parse_var_line((string) $context->comment);
+                if ($type_and_description['description']) {
+                    $property->description = trim($type_and_description['description']);
+                } elseif ($this->is_docblock_root($property)) {
+                    $property->description = $this->parse_docblock($context->comment);
                 }
             } elseif (null === $property->description) {
                 $property->description = Generator::UNDEFINED;
             }
-
-            if (!Generator::isDefault($property->ref)) {
+            if (!Generator::is_default($property->ref)) {
                 continue;
             }
-
-            if (Generator::isDefault($property->type)) {
-                $this->generator->getTypeResolver()->augmentSchemaType($analysis, $property);
+            if (Generator::is_default($property->type)) {
+                $this->generator->get_type_resolver()->augment_schema_type($analysis, $property);
             }
-
-            $this->generator->getTypeResolver()->mapNativeType($property, $property->type);
-
-            if (Generator::isDefault($property->example) && ($example = $this->extractExampleDescription((string) $context->comment))) {
+            $this->generator->get_type_resolver()->map_native_type($property, $property->type);
+            if (Generator::is_default($property->example) && $example = $this->extract_example_description((string) $context->comment)) {
                 $property->example = $example;
             }
-
-            if (Generator::isDefault($property->deprecated) && ($deprecated = $this->isDeprecated($context->comment))) {
+            if (Generator::is_default($property->deprecated) && $deprecated = $this->is_deprecated($context->comment)) {
                 $property->deprecated = $deprecated;
             }
         }

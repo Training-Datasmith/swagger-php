@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api;
 
-namespace OpenApi;
-
-interface GeneratorAwareInterface
+interface Generator_Aware_Interface
 {
-    public function setGenerator(Generator $generator);
+    public function set_generator(Generator $generator);
 }

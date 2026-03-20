@@ -1,24 +1,20 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Analysers;
 
-namespace OpenApi\Analysers;
-
-use OpenApi\Annotations as OA;
-use OpenApi\Context;
-use OpenApi\GeneratorAwareInterface;
-
-interface AnnotationFactoryInterface extends GeneratorAwareInterface
+use Open_Api\Annotations as OA;
+use Open_Api\Context;
+use Open_Api\Generator_Aware_Interface;
+interface Annotation_Factory_Interface extends Generator_Aware_Interface
 {
     /**
      * Checks if this factory is supported by the current runtime.
      */
-    public function isSupported(): bool;
-
+    public function is_supported(): bool;
     /**
      * @return list<OA\AbstractAnnotation> top level annotations
      */

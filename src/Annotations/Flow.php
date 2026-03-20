@@ -1,15 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * Configuration details for a supported OAuth flow.
  *
@@ -17,7 +14,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class Flow extends AbstractAnnotation
+class Flow extends Abstract_Annotation
 {
     /**
      * The authorization url to be used for this flow.
@@ -26,8 +23,7 @@ class Flow extends AbstractAnnotation
      *
      * @var string
      */
-    public $authorizationUrl = Generator::UNDEFINED;
-
+    public $authorization_url = Generator::UNDEFINED;
     /**
      * The token URL to be used for this flow.
      *
@@ -35,8 +31,7 @@ class Flow extends AbstractAnnotation
      *
      * @var string
      */
-    public $tokenUrl = Generator::UNDEFINED;
-
+    public $token_url = Generator::UNDEFINED;
     /**
      * The URL to be used for obtaining refresh tokens.
      *
@@ -44,8 +39,7 @@ class Flow extends AbstractAnnotation
      *
      * @var string
      */
-    public $refreshUrl = Generator::UNDEFINED;
-
+    public $refresh_url = Generator::UNDEFINED;
     /**
      * Flow name.
      *
@@ -54,7 +48,6 @@ class Flow extends AbstractAnnotation
      * @var 'authorizationCode'|'clientCredentials'|'implicit'|'password'
      */
     public $flow = Generator::UNDEFINED;
-
     /**
      * The available scopes for the OAuth2 security scheme.
      *
@@ -63,42 +56,27 @@ class Flow extends AbstractAnnotation
      * @var array
      */
     public $scopes = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
     public static $_required = ['scopes', 'flow'];
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'flow' => ['implicit', 'password', 'authorizationCode', 'clientCredentials'],
-        'refreshUrl' => 'string',
-        'authorizationUrl' => 'string',
-        'tokenUrl' => 'string',
-    ];
-
+    public static $_types = ['flow' => ['implicit', 'password', 'authorizationCode', 'clientCredentials'], 'refreshUrl' => 'string', 'authorizationUrl' => 'string', 'tokenUrl' => 'string'];
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        SecurityScheme::class,
-    ];
-
+    public static $_parents = [Security_Scheme::class];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [Attachable::class => ['attachables']];
     public function jsonSerialize(): \stdClass
     {
         if ($this->scopes === []) {
             $this->scopes = new \stdClass();
         }
-
         return parent::jsonSerialize();
     }
 }

@@ -1,25 +1,20 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Processors\Concerns;
 
-namespace OpenApi\Processors\Concerns;
-
-use OpenApi\Context;
-
-trait RefTrait
+use Open_Api\Context;
+trait Ref_Trait
 {
-    protected function toRefKey(Context $context, ?string $name): string
+    protected function to_ref_key(Context $context, ?string $name): string
     {
-        $fqn = strtolower($context->fullyQualifiedName($name) ?? '');
-
+        $fqn = strtolower($context->fully_qualified_name($name) ?? '');
         return ltrim($fqn, '\\');
     }
-
-    protected function isRef(?string $ref): bool
+    protected function is_ref(?string $ref): bool
     {
         return $ref && str_starts_with($ref, '#/');
     }

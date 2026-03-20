@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
-
-namespace OpenApi\Annotations;
+namespace Open_Api\Annotations;
 
 /**
  * A container for custom data to be attached to an annotation.
@@ -15,53 +13,12 @@ namespace OpenApi\Annotations;
  *
  * @Annotation
  */
-class Attachable extends AbstractAnnotation
+class Attachable extends Abstract_Annotation
 {
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        AdditionalProperties::class,
-        Components::class,
-        Contact::class,
-        Delete::class,
-        Discriminator::class,
-        Encoding::class,
-        Examples::class,
-        ExternalDocumentation::class,
-        Flow::class,
-        Get::class,
-        Head::class,
-        Header::class,
-        Info::class,
-        Items::class,
-        JsonContent::class,
-        License::class,
-        Link::class,
-        MediaType::class,
-        OpenApi::class,
-        Operation::class,
-        Options::class,
-        Parameter::class,
-        Patch::class,
-        PathItem::class,
-        PathParameter::class,
-        Post::class,
-        Property::class,
-        Put::class,
-        RequestBody::class,
-        Response::class,
-        Schema::class,
-        SecurityScheme::class,
-        Server::class,
-        ServerVariable::class,
-        Tag::class,
-        Trace::class,
-        Webhook::class,
-        Xml::class,
-        XmlContent::class,
-    ];
-
+    public static $_parents = [Additional_Properties::class, Components::class, Contact::class, Delete::class, Discriminator::class, Encoding::class, Examples::class, External_Documentation::class, Flow::class, Get::class, Head::class, Header::class, Info::class, Items::class, Json_Content::class, License::class, Link::class, Media_Type::class, Open_Api::class, Operation::class, Options::class, Parameter::class, Patch::class, Path_Item::class, Path_Parameter::class, Post::class, Property::class, Put::class, Request_Body::class, Response::class, Schema::class, Security_Scheme::class, Server::class, Server_Variable::class, Tag::class, Trace::class, Webhook::class, Xml::class, Xml_Content::class];
     /**
      * Allows to type-hint a specific parent annotation class.
      *
@@ -70,7 +27,7 @@ class Attachable extends AbstractAnnotation
      *
      * @return array<class-string>|null List of valid parent annotation classes. If <code>null</code>, the default nesting rules apply.
      */
-    public function allowedParents(): ?array
+    public function allowed_parents(): ?array
     {
         return null;
     }

@@ -1,36 +1,30 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Processors;
 
-namespace OpenApi\Processors;
-
-use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-
+use Open_Api\Analysis;
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
 /**
  * Look at all (direct) interfaces for a schema and:
  * - merge interfaces annotations/methods into the schema if the interface does not have a schema itself
  * - inherit from the interface if it has a schema (allOf).
  */
-class ExpandInterfaces
+class Expand_Interfaces
 {
-    use Concerns\MergePropertiesTrait;
-
+    use Concerns\Merge_Properties_Trait;
     public function __invoke(Analysis $analysis): void
     {
-        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
-
+        $schemas = $analysis->get_annotations_of_type(OA\Schema::class, true);
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {
-                $className = $schema->_context->fullyQualifiedName($schema->_context->class);
-                $interfaces = $analysis->getInterfacesOfClass($className, true);
-
-                if (class_exists($className) && ($parent = get_parent_class($className)) && ($inherited = array_keys(class_implements($parent)))) {
+                $class_name = $schema->_context->fully_qualified_name($schema->_context->class);
+                $interfaces = $analysis->get_interfaces_of_class($class_name, true);
+                if (class_exists($class_name) && ($parent = get_parent_class($class_name)) && $inherited = array_keys(class_implements($parent))) {
                     // strip interfaces we inherit from ancestor
                     foreach (array_keys($interfaces) as $interface) {
                         if (in_array(ltrim((string) $interface, '\\'), $inherited)) {
@@ -38,16 +32,15 @@ class ExpandInterfaces
                         }
                     }
                 }
-
                 $existing = [];
                 foreach ($interfaces as $interface) {
-                    $interfaceName = $interface['context']->fullyQualifiedName($interface['interface']);
-                    $interfaceSchema = $analysis->getAnnotationForSource($interfaceName);
-                    if ($interfaceSchema) {
-                        $refPath = Generator::isDefault($interfaceSchema->schema) ? $interface['interface'] : $interfaceSchema->schema;
-                        $this->inheritFrom($analysis, $schema, $interfaceSchema, $refPath, $interface['context']);
+                    $interface_name = $interface['context']->fully_qualified_name($interface['interface']);
+                    $interface_schema = $analysis->get_annotation_for_source($interface_name);
+                    if ($interface_schema) {
+                        $ref_path = Generator::is_default($interface_schema->schema) ? $interface['interface'] : $interface_schema->schema;
+                        $this->inherit_from($analysis, $schema, $interface_schema, $ref_path, $interface['context']);
                     } else {
-                        $this->mergeMethods($schema, $interface, $existing);
+                        $this->merge_methods($schema, $interface, $existing);
                     }
                 }
             }

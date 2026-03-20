@@ -1,15 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * Each Media Type object provides schema and examples for the media type identified by its key.
  *
@@ -19,22 +16,20 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class MediaType extends AbstractAnnotation
+class Media_Type extends Abstract_Annotation
 {
     /**
      * The key into Operation->content array.
      *
      * @var string
      */
-    public $mediaType = Generator::UNDEFINED;
-
+    public $media_type = Generator::UNDEFINED;
     /**
      * The schema defining the type used for the request body.
      *
      * @var Schema
      */
     public $schema = Generator::UNDEFINED;
-
     /**
      * Example of the media type.
      *
@@ -45,7 +40,6 @@ class MediaType extends AbstractAnnotation
      * the example value shall override the example provided by the schema.
      */
     public $example = Generator::UNDEFINED;
-
     /**
      * Examples of the media type.
      *
@@ -56,7 +50,6 @@ class MediaType extends AbstractAnnotation
      * @var array<Examples>
      */
     public $examples = Generator::UNDEFINED;
-
     /**
      * A map between a property name and its encoding information.
      *
@@ -68,36 +61,23 @@ class MediaType extends AbstractAnnotation
      * @var list<Encoding>
      */
     public $encoding = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Schema::class => 'schema',
-        Examples::class => ['examples', 'example'],
-        Encoding::class => ['encoding', 'property'],
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [Schema::class => 'schema', Examples::class => ['examples', 'example'], Encoding::class => ['encoding', 'property'], Attachable::class => ['attachables']];
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        Response::class,
-        RequestBody::class,
-    ];
-
-    protected function encodingCompat($encoding, callable $factory)
+    public static $_parents = [Response::class, Request_Body::class];
+    protected function encoding_compat($encoding, callable $factory)
     {
         if (!is_array($encoding)) {
             return $encoding;
         }
-
         $compat = [];
         foreach ($encoding as $name => $value) {
             $compat[] = is_array($value) ? $factory([...$value, 'property' => $name]) : $value;
         }
-
         return $compat;
     }
 }

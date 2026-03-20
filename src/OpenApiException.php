@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api;
 
-namespace OpenApi;
-
-class OpenApiException extends \Exception
+class Open_Api_Exception extends \Exception
 {
 }

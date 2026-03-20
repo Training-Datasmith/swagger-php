@@ -1,15 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * The Link object represents a possible design-time link for a response.
  *
@@ -26,7 +23,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class Link extends AbstractAnnotation
+class Link extends Abstract_Annotation
 {
     /**
      * @see [Reference Object](https://spec.openapis.org/oas/v3.1.1.html#reference-object)
@@ -34,14 +31,12 @@ class Link extends AbstractAnnotation
      * @var string|class-string|object
      */
     public $ref = Generator::UNDEFINED;
-
     /**
      * The key into MediaType->links array.
      *
      * @var string
      */
     public $link = Generator::UNDEFINED;
-
     /**
      * A relative or absolute reference to an OA operation.
      *
@@ -51,8 +46,7 @@ class Link extends AbstractAnnotation
      *
      * @var string
      */
-    public $operationRef = Generator::UNDEFINED;
-
+    public $operation_ref = Generator::UNDEFINED;
     /**
      * The name of an existing, resolvable OA operation, as defined with a unique <code>operationId</code>.
      *
@@ -60,8 +54,7 @@ class Link extends AbstractAnnotation
      *
      * @var string
      */
-    public $operationId = Generator::UNDEFINED;
-
+    public $operation_id = Generator::UNDEFINED;
     /**
      * A map representing parameters to pass to an operation as specified with operationId or identified via
      * operationRef.
@@ -74,12 +67,10 @@ class Link extends AbstractAnnotation
      * @var array<string,mixed>
      */
     public $parameters = Generator::UNDEFINED;
-
     /**
      * A literal value or {expression} to use as a request body when calling the target operation.
      */
-    public $requestBody = Generator::UNDEFINED;
-
+    public $request_body = Generator::UNDEFINED;
     /**
      * A description of the link.
      *
@@ -88,27 +79,18 @@ class Link extends AbstractAnnotation
      * @var string
      */
     public $description = Generator::UNDEFINED;
-
     /**
      * A server object to be used by the target operation.
      *
      * @var Server
      */
     public $server = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Server::class => 'server',
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [Server::class => 'server', Attachable::class => ['attachables']];
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        Components::class,
-        Response::class,
-    ];
+    public static $_parents = [Components::class, Response::class];
 }

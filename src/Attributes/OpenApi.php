@@ -1,18 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Attributes;
 
-namespace OpenApi\Attributes;
-
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class OpenApi extends OA\OpenApi
+class Open_Api extends OA\Open_Api
 {
     /**
      * @param list<Server>|null        $servers
@@ -28,21 +25,15 @@ class OpenApi extends OA\OpenApi
         ?array $servers = null,
         ?array $security = null,
         ?array $tags = null,
-        ?ExternalDocumentation $externalDocs = null,
+        ?External_Documentation $external_docs = null,
         ?array $paths = null,
         ?Components $components = null,
         ?array $webhooks = null,
-
         // abstract annotation
         ?array $x = null,
         ?array $attachables = null
-    ) {
-        parent::__construct([
-                'openapi' => $openapi,
-                'security' => $security ?? Generator::UNDEFINED,
-                'x' => $x ?? Generator::UNDEFINED,
-                'attachables' => $attachables ?? Generator::UNDEFINED,
-                'value' => $this->combine($info, $servers, $tags, $externalDocs, $paths, $components, $webhooks),
-            ]);
+    )
+    {
+        parent::__construct(['openapi' => $openapi, 'security' => $security ?? Generator::UNDEFINED, 'x' => $x ?? Generator::UNDEFINED, 'attachables' => $attachables ?? Generator::UNDEFINED, 'value' => $this->combine($info, $servers, $tags, $external_docs, $paths, $components, $webhooks)]);
     }
 }

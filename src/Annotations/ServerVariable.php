@@ -1,15 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * An object representing a server variable for server URL template substitution.
  *
@@ -17,22 +14,20 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class ServerVariable extends AbstractAnnotation
+class Server_Variable extends Abstract_Annotation
 {
     /**
      * The key into Server->variables array.
      *
      * @var string
      */
-    public $serverVariable = Generator::UNDEFINED;
-
+    public $server_variable = Generator::UNDEFINED;
     /**
      * An enumeration of values to be used if the substitution options are from a limited set.
      *
      * @var list<string|int|float|bool|\UnitEnum>|class-string
      */
     public $enum = Generator::UNDEFINED;
-
     /**
      * The default value to use for substitution, and to send, if an alternate value is not supplied.
      *
@@ -41,7 +36,6 @@ class ServerVariable extends AbstractAnnotation
      * @var string
      */
     public $default = Generator::UNDEFINED;
-
     /**
      * A map between a variable name and its value.
      *
@@ -50,7 +44,6 @@ class ServerVariable extends AbstractAnnotation
      * @var array
      */
     public $variables = Generator::UNDEFINED;
-
     /**
      * An optional description for the server variable.
      *
@@ -59,31 +52,20 @@ class ServerVariable extends AbstractAnnotation
      * @var string
      */
     public $description = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        Server::class,
-    ];
-
+    public static $_parents = [Server::class];
     /**
      * @inheritdoc
      */
     public static $_required = ['default'];
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'default' => 'string',
-        'description' => 'string',
-    ];
-
+    public static $_types = ['default' => 'string', 'description' => 'string'];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Attachable::class => ['attachables'],
-    ];
+    public static $_nested = [Attachable::class => ['attachables']];
 }

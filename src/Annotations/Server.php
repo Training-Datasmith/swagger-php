@@ -1,15 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * An object representing a server.
  *
@@ -17,7 +14,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class Server extends AbstractAnnotation
+class Server extends Abstract_Annotation
 {
     /**
      * An URL to the target host.
@@ -29,7 +26,6 @@ class Server extends AbstractAnnotation
      * @var string
      */
     public $url = Generator::UNDEFINED;
-
     /**
      * An optional string describing the host designated by the URL.
      *
@@ -38,7 +34,6 @@ class Server extends AbstractAnnotation
      * @var string
      */
     public $description = Generator::UNDEFINED;
-
     /**
      * A map between a variable name and its value.
      *
@@ -47,43 +42,20 @@ class Server extends AbstractAnnotation
      * @var list<ServerVariable>
      */
     public $variables = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        OpenApi::class,
-        PathItem::class,
-        Operation::class,
-        Get::class,
-        Post::class,
-        Put::class,
-        Delete::class,
-        Patch::class,
-        Head::class,
-        Options::class,
-        Trace::class,
-        Link::class,
-    ];
-
+    public static $_parents = [Open_Api::class, Path_Item::class, Operation::class, Get::class, Post::class, Put::class, Delete::class, Patch::class, Head::class, Options::class, Trace::class, Link::class];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        ServerVariable::class => ['variables', 'serverVariable'],
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [Server_Variable::class => ['variables', 'serverVariable'], Attachable::class => ['attachables']];
     /**
      * @inheritdoc
      */
     public static $_required = ['url'];
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'url' => 'string',
-        'description' => 'string',
-    ];
+    public static $_types = ['url' => 'string', 'description' => 'string'];
 }

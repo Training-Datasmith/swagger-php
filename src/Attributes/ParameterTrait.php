@@ -1,16 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Attributes;
 
-namespace OpenApi\Attributes;
-
-use OpenApi\Generator;
-
-trait ParameterTrait
+use Open_Api\Generator;
+trait Parameter_Trait
 {
     /**
      * @param 'query'|'header'|'path'|'cookie'|null                   $in
@@ -27,40 +24,40 @@ trait ParameterTrait
         ?string $in = null,
         ?bool $required = null,
         ?bool $deprecated = null,
-        ?bool $allowEmptyValue = null,
+        ?bool $allow_empty_value = null,
         string|object|null $ref = null,
         ?Schema $schema = null,
         mixed $example = Generator::UNDEFINED,
         ?array $examples = null,
-        array|JsonContent|XmlContent|Attachable|null $content = null,
+        array|Json_Content|Xml_Content|Attachable|null $content = null,
         ?string $style = null,
         ?bool $explode = null,
-        ?bool $allowReserved = null,
-        ?array $spaceDelimited = null,
-        ?array $pipeDelimited = null,
-        mixed $deepObject = null,
-
+        ?bool $allow_reserved = null,
+        ?array $space_delimited = null,
+        ?array $pipe_delimited = null,
+        mixed $deep_object = null,
         // abstract annotation
         ?array $x = null,
         ?array $attachables = null
-    ) {
+    )
+    {
         parent::__construct([
             'parameter' => $parameter ?? Generator::UNDEFINED,
             'name' => $name ?? Generator::UNDEFINED,
             'description' => $description,
             // next two are special as we override the default value for specific Parameter subclasses
-            'in' => $in ?? (Generator::isDefault($this->in) ? Generator::UNDEFINED : $this->in),
-            'required' => $required ?? (Generator::isDefault($this->required) ? Generator::UNDEFINED : $this->required),
+            'in' => $in ?? (Generator::is_default($this->in) ? Generator::UNDEFINED : $this->in),
+            'required' => $required ?? (Generator::is_default($this->required) ? Generator::UNDEFINED : $this->required),
             'deprecated' => $deprecated ?? Generator::UNDEFINED,
-            'allowEmptyValue' => $allowEmptyValue ?? Generator::UNDEFINED,
+            'allowEmptyValue' => $allow_empty_value ?? Generator::UNDEFINED,
             'ref' => $ref ?? Generator::UNDEFINED,
             'example' => $example,
             'style' => $style ?? Generator::UNDEFINED,
             'explode' => $explode ?? Generator::UNDEFINED,
-            'allowReserved' => $allowReserved ?? Generator::UNDEFINED,
-            'spaceDelimited' => $spaceDelimited ?? Generator::UNDEFINED,
-            'pipeDelimited' => $pipeDelimited ?? Generator::UNDEFINED,
-            'deepObject' => $deepObject ?? Generator::UNDEFINED,
+            'allowReserved' => $allow_reserved ?? Generator::UNDEFINED,
+            'spaceDelimited' => $space_delimited ?? Generator::UNDEFINED,
+            'pipeDelimited' => $pipe_delimited ?? Generator::UNDEFINED,
+            'deepObject' => $deep_object ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
             'value' => $this->combine($schema, $examples, $content),

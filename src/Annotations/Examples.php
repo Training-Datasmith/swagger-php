@@ -1,19 +1,16 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * @Annotation
  */
-class Examples extends AbstractAnnotation
+class Examples extends Abstract_Annotation
 {
     /**
      * The relative or absolute path to an example.
@@ -23,21 +20,18 @@ class Examples extends AbstractAnnotation
      * @var string|class-string|object
      */
     public $ref = Generator::UNDEFINED;
-
     /**
      * The key into <code>#/components/examples</code>.
      *
      * @var string
      */
     public $example = Generator::UNDEFINED;
-
     /**
      * Short description for the example.
      *
      * @var string
      */
     public $summary = Generator::UNDEFINED;
-
     /**
      * Embedded literal example.
      *
@@ -49,7 +43,6 @@ class Examples extends AbstractAnnotation
      * @var string
      */
     public $description = Generator::UNDEFINED;
-
     /**
      * Embedded literal example.
      *
@@ -61,7 +54,6 @@ class Examples extends AbstractAnnotation
      * @var int|string|array
      */
     public $value = Generator::UNDEFINED;
-
     /**
      * An URL that points to the literal example.
      *
@@ -72,30 +64,12 @@ class Examples extends AbstractAnnotation
      *
      * @var string
      */
-    public $externalValue = Generator::UNDEFINED;
-
-    public static $_types = [
-        'summary' => 'string',
-        'description' => 'string',
-        'externalValue' => 'string',
-    ];
-
+    public $external_value = Generator::UNDEFINED;
+    public static $_types = ['summary' => 'string', 'description' => 'string', 'externalValue' => 'string'];
     public static $_required = ['summary'];
-
-    public static $_parents = [
-        Components::class,
-        Schema::class,
-        Parameter::class,
-        PathParameter::class,
-        MediaType::class,
-        JsonContent::class,
-        XmlContent::class,
-    ];
-
+    public static $_parents = [Components::class, Schema::class, Parameter::class, Path_Parameter::class, Media_Type::class, Json_Content::class, Xml_Content::class];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Attachable::class => ['attachables'],
-    ];
+    public static $_nested = [Attachable::class => ['attachables']];
 }

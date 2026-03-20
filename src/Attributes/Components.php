@@ -1,16 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Attributes;
 
-namespace OpenApi\Attributes;
-
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Components extends OA\Components
 {
@@ -30,22 +27,17 @@ class Components extends OA\Components
         ?array $schemas = null,
         ?array $responses = null,
         ?array $parameters = null,
-        ?array $requestBodies = null,
+        ?array $request_bodies = null,
         ?array $examples = null,
         ?array $headers = null,
-        ?array $securitySchemes = null,
+        ?array $security_schemes = null,
         ?array $links = null,
         ?array $callbacks = null,
-
         // abstract annotation
         ?array $x = null,
         ?array $attachables = null
-    ) {
-        parent::__construct([
-            'callbacks' => $callbacks ?? Generator::UNDEFINED,
-            'x' => $x ?? Generator::UNDEFINED,
-            'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($schemas, $responses, $parameters, $examples, $requestBodies, $headers, $securitySchemes, $links),
-        ]);
+    )
+    {
+        parent::__construct(['callbacks' => $callbacks ?? Generator::UNDEFINED, 'x' => $x ?? Generator::UNDEFINED, 'attachables' => $attachables ?? Generator::UNDEFINED, 'value' => $this->combine($schemas, $responses, $parameters, $examples, $request_bodies, $headers, $security_schemes, $links)]);
     }
 }

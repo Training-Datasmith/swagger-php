@@ -1,17 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Attributes\JsonContent;
-use OpenApi\Attributes\XmlContent;
-use OpenApi\Generator;
-
+use Open_Api\Attributes\Json_Content;
+use Open_Api\Attributes\Xml_Content;
+use Open_Api\Generator;
 /**
  * Describes a single request body.
  *
@@ -19,7 +16,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class RequestBody extends AbstractAnnotation
+class Request_Body extends Abstract_Annotation
 {
     /**
      * The relative or absolute path to a request body.
@@ -29,14 +26,12 @@ class RequestBody extends AbstractAnnotation
      * @var string|class-string|object
      */
     public $ref = Generator::UNDEFINED;
-
     /**
      * The key into Components->requestBodies array.
      *
      * @var string
      */
     public $request = Generator::UNDEFINED;
-
     /**
      * A brief description of the parameter.
      *
@@ -47,7 +42,6 @@ class RequestBody extends AbstractAnnotation
      * @var string
      */
     public $description = Generator::UNDEFINED;
-
     /**
      * Determines whether this parameter is mandatory.
      *
@@ -57,7 +51,6 @@ class RequestBody extends AbstractAnnotation
      * @var bool
      */
     public $required = Generator::UNDEFINED;
-
     /**
      * The content of the request body.
      *
@@ -67,43 +60,19 @@ class RequestBody extends AbstractAnnotation
      * @var array<MediaType|JsonContent|XmlContent>|MediaType|JsonContent|XmlContent|Attachable
      */
     public $content = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'description' => 'string',
-        'required' => 'boolean',
-        'request' => 'string',
-    ];
-
-    public static $_parents = [
-        Components::class,
-        Delete::class,
-        Get::class,
-        Head::class,
-        Operation::class,
-        Options::class,
-        Patch::class,
-        Post::class,
-        Trace::class,
-        Put::class,
-    ];
-
+    public static $_types = ['description' => 'string', 'required' => 'boolean', 'request' => 'string'];
+    public static $_parents = [Components::class, Delete::class, Get::class, Head::class, Operation::class, Options::class, Patch::class, Post::class, Trace::class, Put::class];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        MediaType::class => ['content', 'mediaType'],
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [Media_Type::class => ['content', 'mediaType'], Attachable::class => ['attachables']];
     public function jsonSerialize(): \stdClass
     {
         $data = parent::jsonSerialize();
-
         unset($data->request);
-
         return $data;
     }
 }

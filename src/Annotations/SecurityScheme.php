@@ -1,21 +1,18 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object-0)
  *
  * @Annotation
  */
-class SecurityScheme extends AbstractAnnotation
+class Security_Scheme extends Abstract_Annotation
 {
     /**
      * The relative or absolute path to a security scheme.
@@ -25,49 +22,42 @@ class SecurityScheme extends AbstractAnnotation
      * @var string|class-string|object
      */
     public $ref = Generator::UNDEFINED;
-
     /**
      * The key into OpenApi->security array.
      *
      * @var string
      */
-    public $securityScheme = Generator::UNDEFINED;
-
+    public $security_scheme = Generator::UNDEFINED;
     /**
      * The type of the security scheme.
      *
      * @var string|non-empty-array<string>
      */
     public $type = Generator::UNDEFINED;
-
     /**
      * A short description for security scheme.
      *
      * @var string
      */
     public $description = Generator::UNDEFINED;
-
     /**
      * The name of the header or query parameter to be used.
      *
      * @var string
      */
     public $name = Generator::UNDEFINED;
-
     /**
      * Required The location of the API key.
      *
      * @var string
      */
     public $in = Generator::UNDEFINED;
-
     /**
      * The flow used by the OAuth2 security scheme.
      *
      * @var list<Flow>
      */
     public $flows = Generator::UNDEFINED;
-
     /**
      * A hint to the client to identify how the bearer token is formatted.
      *
@@ -75,8 +65,7 @@ class SecurityScheme extends AbstractAnnotation
      *
      * @var string
      */
-    public $bearerFormat = Generator::UNDEFINED;
-
+    public $bearer_format = Generator::UNDEFINED;
     /**
      * The name of the HTTP Authorization scheme.
      *
@@ -85,56 +74,37 @@ class SecurityScheme extends AbstractAnnotation
      * @var string
      */
     public $scheme = Generator::UNDEFINED;
-
     /**
      * OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL.
      *
      * @var string
      */
-    public $openIdConnectUrl = Generator::UNDEFINED;
-
+    public $open_id_connect_url = Generator::UNDEFINED;
     /**
      * @inheritdoc
      */
     public static $_required = ['securityScheme', 'type'];
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'type' => ['http', 'apiKey', 'oauth2', 'openIdConnect'],
-        'description' => 'string',
-        'name' => 'string',
-        'bearerFormat' => 'string',
-        'in' => ['query', 'header', 'cookie'],
-    ];
-
+    public static $_types = ['type' => ['http', 'apiKey', 'oauth2', 'openIdConnect'], 'description' => 'string', 'name' => 'string', 'bearerFormat' => 'string', 'in' => ['query', 'header', 'cookie']];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Flow::class => ['flows', 'flow'],
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [Flow::class => ['flows', 'flow'], Attachable::class => ['attachables']];
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        Components::class,
-    ];
-
+    public static $_parents = [Components::class];
     /**
      * @inheritdoc
      */
     public function merge(array $annotations, bool $ignore = false): array
     {
         $unmerged = parent::merge($annotations, $ignore);
-
         if ($this->type === 'oauth2') {
             $this->name = Generator::UNDEFINED;
         }
-
         return $unmerged;
     }
 }

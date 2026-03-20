@@ -1,15 +1,13 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Attributes;
 
-namespace OpenApi\Attributes;
-
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Header extends OA\Header
 {
@@ -25,22 +23,12 @@ class Header extends OA\Header
         ?bool $required = null,
         ?Schema $schema = null,
         ?bool $deprecated = null,
-        ?bool $allowEmptyValue = null,
-
+        ?bool $allow_empty_value = null,
         // abstract annotation
         ?array $x = null,
         ?array $attachables = null
-    ) {
-        parent::__construct([
-            'ref' => $ref ?? Generator::UNDEFINED,
-            'header' => $header ?? Generator::UNDEFINED,
-            'description' => $description,
-            'required' => $required ?? Generator::UNDEFINED,
-            'deprecated' => $deprecated ?? Generator::UNDEFINED,
-            'allowEmptyValue' => $allowEmptyValue ?? Generator::UNDEFINED,
-            'x' => $x ?? Generator::UNDEFINED,
-            'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($schema),
-        ]);
+    )
+    {
+        parent::__construct(['ref' => $ref ?? Generator::UNDEFINED, 'header' => $header ?? Generator::UNDEFINED, 'description' => $description, 'required' => $required ?? Generator::UNDEFINED, 'deprecated' => $deprecated ?? Generator::UNDEFINED, 'allowEmptyValue' => $allow_empty_value ?? Generator::UNDEFINED, 'x' => $x ?? Generator::UNDEFINED, 'attachables' => $attachables ?? Generator::UNDEFINED, 'value' => $this->combine($schema)]);
     }
 }

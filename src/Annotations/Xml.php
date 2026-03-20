@@ -1,21 +1,18 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * @see [XML Object](https://spec.openapis.org/oas/v3.1.1.html#xml-object)
  *
  * @Annotation
  */
-class Xml extends AbstractAnnotation
+class Xml extends Abstract_Annotation
 {
     /**
      * Replaces the name of the element/attribute used for the described schema property.
@@ -29,21 +26,18 @@ class Xml extends AbstractAnnotation
      * @var string
      */
     public $name = Generator::UNDEFINED;
-
     /**
      * The URL of the namespace definition. Value SHOULD be in the form of a URL.
      *
      * @var string
      */
     public $namespace = Generator::UNDEFINED;
-
     /**
      * The prefix to be used for the name.
      *
      * @var string
      */
     public $prefix = Generator::UNDEFINED;
-
     /**
      * Declares whether the property definition translates to an attribute instead of an element.
      *
@@ -52,7 +46,6 @@ class Xml extends AbstractAnnotation
      * @var bool
      */
     public $attribute = Generator::UNDEFINED;
-
     /**
      * MAY be used only for an array definition.
      *
@@ -64,34 +57,16 @@ class Xml extends AbstractAnnotation
      * @var bool
      */
     public $wrapped = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'name' => 'string',
-        'namespace' => 'string',
-        'prefix' => 'string',
-        'attribute' => 'boolean',
-        'wrapped' => 'boolean',
-    ];
-
+    public static $_types = ['name' => 'string', 'namespace' => 'string', 'prefix' => 'string', 'attribute' => 'boolean', 'wrapped' => 'boolean'];
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        AdditionalProperties::class,
-        Schema::class,
-        Property::class,
-        Schema::class,
-        Items::class,
-        XmlContent::class,
-    ];
-
+    public static $_parents = [Additional_Properties::class, Schema::class, Property::class, Schema::class, Items::class, Xml_Content::class];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Attachable::class => ['attachables'],
-    ];
+    public static $_nested = [Attachable::class => ['attachables']];
 }

@@ -1,15 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * A single encoding definition applied to a single schema property.
  *
@@ -17,7 +14,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class Encoding extends AbstractAnnotation
+class Encoding extends Abstract_Annotation
 {
     /**
      * The property name to which the encoding applies.
@@ -25,67 +22,46 @@ class Encoding extends AbstractAnnotation
      * @var string
      */
     public $property = Generator::UNDEFINED;
-
     /**
      * The content type.
      *
      * @var string
      */
-    public $contentType = Generator::UNDEFINED;
-
+    public $content_type = Generator::UNDEFINED;
     /**
      * Additional headers.
      *
      * @var list<Header>
      */
     public $headers = Generator::UNDEFINED;
-
     /**
      * @var string
      */
     public $style = Generator::UNDEFINED;
-
     /**
      * @var bool
      */
     public $explode = Generator::UNDEFINED;
-
     /**
      * @var bool
      */
-    public $allowReserved = Generator::UNDEFINED;
-
+    public $allow_reserved = Generator::UNDEFINED;
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        JsonContent::class,
-        XmlContent::class,
-        MediaType::class,
-        Property::class,
-    ];
-
+    public static $_parents = [Json_Content::class, Xml_Content::class, Media_Type::class, Property::class];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Header::class => ['headers', 'header'],
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [Header::class => ['headers', 'header'], Attachable::class => ['attachables']];
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'contentType' => 'string',
-    ];
-
+    public static $_types = ['contentType' => 'string'];
     public function jsonSerialize(): \stdClass
     {
         $data = parent::jsonSerialize();
-
         unset($data->property);
-
         return $data;
     }
 }

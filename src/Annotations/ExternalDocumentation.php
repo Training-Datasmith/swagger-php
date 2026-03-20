@@ -1,15 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
-
+use Open_Api\Generator;
 /**
  * Allows referencing an external resource for extended documentation.
  *
@@ -17,7 +14,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class ExternalDocumentation extends AbstractAnnotation
+class External_Documentation extends Abstract_Annotation
 {
     /**
      * A short description of the target documentation. GFM syntax can be used for rich text representation.
@@ -25,54 +22,26 @@ class ExternalDocumentation extends AbstractAnnotation
      * @var string
      */
     public $description = Generator::UNDEFINED;
-
     /**
      * The URL for the target documentation.
      *
      * @var string
      */
     public $url = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'description' => 'string',
-        'url' => 'string',
-    ];
-
+    public static $_types = ['description' => 'string', 'url' => 'string'];
     /**
      * @inheritdoc
      */
     public static $_required = ['url'];
-
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        OpenApi::class,
-        Tag::class,
-        Schema::class,
-        AdditionalProperties::class,
-        Property::class,
-        Operation::class,
-        Get::class,
-        Post::class,
-        Put::class,
-        Delete::class,
-        Patch::class,
-        Head::class,
-        Options::class,
-        Trace::class,
-        Items::class,
-        JsonContent::class,
-        XmlContent::class,
-    ];
-
+    public static $_parents = [Open_Api::class, Tag::class, Schema::class, Additional_Properties::class, Property::class, Operation::class, Get::class, Post::class, Put::class, Delete::class, Patch::class, Head::class, Options::class, Trace::class, Items::class, Json_Content::class, Xml_Content::class];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Attachable::class => ['attachables'],
-    ];
+    public static $_nested = [Attachable::class => ['attachables']];
 }

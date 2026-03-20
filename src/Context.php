@@ -1,17 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api;
 
-namespace OpenApi;
-
-use OpenApi\Annotations as OA;
-use OpenApi\Loggers\DefaultLogger;
-use Psr\Log\LoggerInterface;
-
+use Open_Api\Annotations as OA;
+use Open_Api\Loggers\Default_Logger;
+use Psr\Log\Logger_Interface;
 /**
  * The context in which the annotation is parsed.
  *
@@ -43,40 +40,38 @@ use Psr\Log\LoggerInterface;
  * @property array|null                       $scanned     Details of file scanner when using ReflectionAnalyser
  * @property string|null                      $version     The OpenAPI version in use
  */
-#[\AllowDynamicProperties]
+#[\Allow_Dynamic_Properties]
 class Context implements \Stringable
 {
-    public function __construct(array $properties = [], /**
-     * Prototypical inheritance for properties.
-     */
-        protected ?Context $parent = null)
+    public function __construct(
+        array $properties = [],
+        /**
+         * Prototypical inheritance for properties.
+         */
+        protected ?Context $parent = null
+    )
     {
         foreach ($properties as $property => $value) {
             $this->{$property} = $value;
         }
-
-        $this->logger = $this->logger ?: new DefaultLogger();
+        $this->logger = $this->logger ?: new Default_Logger();
     }
-
     /**
      * Ensure this context is part of the context tree.
      */
-    public function ensureRoot(?Context $rootContext): void
+    public function ensure_root(?Context $root_context): void
     {
-        if ($rootContext === $this) {
+        if ($root_context === $this) {
             return;
         }
-
         if (!$this->parent) {
             // use root fallback for these...
             foreach (['logger', 'version'] as $property) {
                 unset($this->{$property});
             }
-
-            $this->parent = $rootContext;
+            $this->parent = $root_context;
         }
     }
-
     /**
      * Check if a property is set directly on this context and not its parent context.
      *
@@ -86,7 +81,6 @@ class Context implements \Stringable
     {
         return property_exists($this, $property);
     }
-
     /**
      * Check if a property is NOT set directly on this context and its parent context.
      *
@@ -96,7 +90,6 @@ class Context implements \Stringable
     {
         return $this->is($property) === false;
     }
-
     /**
      * Return the context containing the specified property.
      */
@@ -108,10 +101,8 @@ class Context implements \Stringable
         if ($this->parent instanceof Context) {
             return $this->parent->with($property);
         }
-
         return null;
     }
-
     /**
      * Get the root context.
      */
@@ -120,45 +111,40 @@ class Context implements \Stringable
         if ($this->parent instanceof Context) {
             return $this->parent->root();
         }
-
         return $this;
     }
-
     /**
      * Get the OpenApi version.
      *
      * This is a best guess and only final once parsing is complete.
      */
-    public function getVersion(): string
+    public function get_version(): string
     {
-        return $this->root()->version ?: OA\OpenApi::DEFAULT_VERSION;
+        return $this->root()->version ?: OA\Open_Api::DEFAULT_VERSION;
     }
-
     /**
      * Check if one of the given version numbers matches the current OpenAPI version.
      *
      * @param string|array $version The version to compare. Allows patch version placeholder `x`; e.g. `3.1.x`.
      */
-    public function isVersion(string|array $version): bool
+    public function is_version(string|array $version): bool
     {
         foreach ((array) $version as $v) {
-            if (OA\OpenApi::versionMatch($this->getVersion(), $v)) {
+            if (OA\Open_Api::version_match($this->get_version(), $v)) {
                 return true;
             }
         }
-
         return false;
     }
-
     /**
      * Export location for debugging.
      *
      * @return string Example: "file1.php on line 12"
      */
-    public function getDebugLocation(): string
+    public function get_debug_location(): string
     {
         $location = '';
-        $fqn = $this->fullyQualifiedName($this->class ?? $this->interface ?? $this->trait ?? $this->enum);
+        $fqn = $this->fully_qualified_name($this->class ?? $this->interface ?? $this->trait ?? $this->enum);
         if ($fqn && ($this->method || $this->property)) {
             $location .= $fqn;
             if ($this->method) {
@@ -182,28 +168,21 @@ class Context implements \Stringable
                 $location .= ':' . $this->character;
             }
         }
-
         return $location;
     }
-
     public function __serialize(): array
     {
         return array_filter(get_object_vars($this), static function ($value): bool {
             $rc = is_object($value) ? new \ReflectionClass($value) : null;
-
-            return (!$rc || !$rc->isAnonymous())
-                && !$value instanceof \Reflector
-                && !$value instanceof \Closure;
+            return (!$rc || !$rc->is_anonymous()) && !$value instanceof \Reflector && !$value instanceof \Closure;
         });
     }
-
     public function __unserialize(array $data): void
     {
         foreach ($data as $name => $value) {
             $this->{$name} = $value;
         }
     }
-
     /**
      * Traverse the context tree to get the property value.
      */
@@ -212,36 +191,30 @@ class Context implements \Stringable
         if ($this->parent instanceof Context) {
             return $this->parent->{$property};
         }
-
         return null;
     }
-
     public function __toString(): string
     {
-        return $this->getDebugLocation();
+        return $this->get_debug_location();
     }
-
     public function __debugInfo()
     {
-        return ['-' => $this->getDebugLocation()];
+        return ['-' => $this->get_debug_location()];
     }
-
     /**
      * Resolve the given `source` to a fully qualified name.
      *
      * @return class-string|null
      */
-    public function fullyQualifiedName(?string $source): ?string
+    public function fully_qualified_name(?string $source): ?string
     {
         if ($source === null) {
             return null;
         }
-
         $namespace = $this->namespace ? str_replace('\\\\', '\\', '\\' . $this->namespace . '\\') : '\\';
-
-        $thisSource = $this->class ?? $this->interface ?? $this->trait;
-        if ($thisSource && strcasecmp($source, $thisSource) === 0) {
-            return $namespace . $thisSource;
+        $this_source = $this->class ?? $this->interface ?? $this->trait;
+        if ($this_source && strcasecmp($source, $this_source) === 0) {
+            return $namespace . $this_source;
         }
         $pos = strpos($source, '\\');
         if ($pos !== false) {
@@ -251,23 +224,22 @@ class Context implements \Stringable
             }
             // Qualified name (Foo\Bar)
             if ($this->uses) {
-                foreach ($this->uses as $alias => $aliasedNamespace) {
+                foreach ($this->uses as $alias => $aliased_namespace) {
                     $alias .= '\\';
                     if (strcasecmp(substr($source, 0, strlen($alias)), $alias) === 0) {
                         // Aliased namespace (use \Long\Namespace as Foo)
-                        return '\\' . $aliasedNamespace . substr($source, strlen($alias) - 1);
+                        return '\\' . $aliased_namespace . substr($source, strlen($alias) - 1);
                     }
                 }
             }
         } elseif ($this->uses) {
             // Unqualified name (Foo)
-            foreach ($this->uses as $alias => $aliasedNamespace) {
+            foreach ($this->uses as $alias => $aliased_namespace) {
                 if (strcasecmp((string) $alias, $source) === 0) {
-                    return '\\' . $aliasedNamespace;
+                    return '\\' . $aliased_namespace;
                 }
             }
         }
-
         return $namespace . $source;
     }
 }

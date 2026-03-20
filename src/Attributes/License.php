@@ -1,16 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Attributes;
 
-namespace OpenApi\Attributes;
-
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class License extends OA\License
 {
@@ -22,17 +19,11 @@ class License extends OA\License
         ?string $name = null,
         ?string $identifier = null,
         ?string $url = null,
-
         // abstract annotation
         ?array $x = null,
         ?array $attachables = null
-    ) {
-        parent::__construct([
-            'name' => $name ?? Generator::UNDEFINED,
-            'identifier' => $identifier ?? Generator::UNDEFINED,
-            'url' => $url ?? Generator::UNDEFINED,
-            'x' => $x ?? Generator::UNDEFINED,
-            'attachables' => $attachables ?? Generator::UNDEFINED,
-        ]);
+    )
+    {
+        parent::__construct(['name' => $name ?? Generator::UNDEFINED, 'identifier' => $identifier ?? Generator::UNDEFINED, 'url' => $url ?? Generator::UNDEFINED, 'x' => $x ?? Generator::UNDEFINED, 'attachables' => $attachables ?? Generator::UNDEFINED]);
     }
 }

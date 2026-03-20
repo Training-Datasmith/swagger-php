@@ -1,77 +1,70 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Processors;
 
-namespace OpenApi\Processors;
-
-use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-
+use Open_Api\Analysis;
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
 /**
  * Look at all (direct) traits for a schema and:
  * - merge trait annotations/methods/properties into the schema if the trait does not have a schema itself
  * - inherit from the trait if it has a schema (allOf).
  */
-class ExpandTraits
+class Expand_Traits
 {
-    use Concerns\MergePropertiesTrait;
-
+    use Concerns\Merge_Properties_Trait;
     public function __invoke(Analysis $analysis): void
     {
-        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
-
+        $schemas = $analysis->get_annotations_of_type(OA\Schema::class, true);
         // do regular trait inheritance / merge
         foreach ($schemas as $schema) {
             if ($schema->_context->is('trait')) {
-                $traits = $analysis->getTraitsOfClass($schema->_context->fullyQualifiedName($schema->_context->trait), true);
+                $traits = $analysis->get_traits_of_class($schema->_context->fully_qualified_name($schema->_context->trait), true);
                 $existing = [];
                 foreach ($traits as $trait) {
-                    $traitSchema = $analysis->getAnnotationForSource($trait['context']->fullyQualifiedName($trait['trait']));
-                    if ($traitSchema) {
-                        $refPath = Generator::isDefault($traitSchema->schema) ? $trait['trait'] : $traitSchema->schema;
-                        $this->inheritFrom($analysis, $schema, $traitSchema, $refPath, $trait['context']);
+                    $trait_schema = $analysis->get_annotation_for_source($trait['context']->fully_qualified_name($trait['trait']));
+                    if ($trait_schema) {
+                        $ref_path = Generator::is_default($trait_schema->schema) ? $trait['trait'] : $trait_schema->schema;
+                        $this->inherit_from($analysis, $schema, $trait_schema, $ref_path, $trait['context']);
                     } else {
-                        $this->mergeMethods($schema, $trait, $existing);
-                        $this->mergeProperties($schema, $trait, $existing);
+                        $this->merge_methods($schema, $trait, $existing);
+                        $this->merge_properties($schema, $trait, $existing);
                     }
                 }
             }
         }
-
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class') && !$schema->_context->is('generated')) {
                 // look at class traits
-                $traits = $analysis->getTraitsOfClass($schema->_context->fullyQualifiedName($schema->_context->class), true);
+                $traits = $analysis->get_traits_of_class($schema->_context->fully_qualified_name($schema->_context->class), true);
                 $existing = [];
                 foreach ($traits as $trait) {
-                    $traitSchema = $analysis->getAnnotationForSource($trait['context']->fullyQualifiedName($trait['trait']));
-                    if ($traitSchema) {
-                        $refPath = Generator::isDefault($traitSchema->schema) ? $trait['trait'] : $traitSchema->schema;
-                        $this->inheritFrom($analysis, $schema, $traitSchema, $refPath, $trait['context']);
+                    $trait_schema = $analysis->get_annotation_for_source($trait['context']->fully_qualified_name($trait['trait']));
+                    if ($trait_schema) {
+                        $ref_path = Generator::is_default($trait_schema->schema) ? $trait['trait'] : $trait_schema->schema;
+                        $this->inherit_from($analysis, $schema, $trait_schema, $ref_path, $trait['context']);
                     } else {
-                        $this->mergeMethods($schema, $trait, $existing);
-                        $this->mergeProperties($schema, $trait, $existing);
+                        $this->merge_methods($schema, $trait, $existing);
+                        $this->merge_properties($schema, $trait, $existing);
                     }
                 }
-
                 // also merge ancestor traits of non schema parents
-                $ancestors = $analysis->getSuperClasses($schema->_context->fullyQualifiedName($schema->_context->class));
+                $ancestors = $analysis->get_super_classes($schema->_context->fully_qualified_name($schema->_context->class));
                 $existing = [];
                 foreach ($ancestors as $ancestor) {
-                    $ancestorSchema = $analysis->getAnnotationForSource($ancestor['context']->fullyQualifiedName($ancestor['class']));
-                    if ($ancestorSchema) {
+                    $ancestor_schema = $analysis->get_annotation_for_source($ancestor['context']->fully_qualified_name($ancestor['class']));
+                    if ($ancestor_schema) {
                         // stop here as we inherit everything above
                         break;
                     } else {
-                        $traits = $analysis->getTraitsOfClass($schema->_context->fullyQualifiedName($ancestor['class']), true);
+                        $traits = $analysis->get_traits_of_class($schema->_context->fully_qualified_name($ancestor['class']), true);
                         foreach ($traits as $trait) {
-                            $this->mergeMethods($schema, $trait, $existing);
-                            $this->mergeProperties($schema, $trait, $existing);
+                            $this->merge_methods($schema, $trait, $existing);
+                            $this->merge_properties($schema, $trait, $existing);
                         }
                     }
                 }

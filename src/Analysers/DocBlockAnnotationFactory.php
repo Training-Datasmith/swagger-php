@@ -1,67 +1,54 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Analysers;
 
-namespace OpenApi\Analysers;
-
-use OpenApi\Annotations as OA;
-use OpenApi\Context;
-use OpenApi\Generator;
-use OpenApi\GeneratorAwareTrait;
-
-class DocBlockAnnotationFactory implements AnnotationFactoryInterface
+use Open_Api\Annotations as OA;
+use Open_Api\Context;
+use Open_Api\Generator;
+use Open_Api\Generator_Aware_Trait;
+class Doc_Block_Annotation_Factory implements Annotation_Factory_Interface
 {
-    use GeneratorAwareTrait;
-
-    protected ?DocBlockParser $docBlockParser = null;
-
-    public function __construct(?DocBlockParser $docBlockParser = null)
+    use Generator_Aware_Trait;
+    protected ?Doc_Block_Parser $doc_block_parser = null;
+    public function __construct(?Doc_Block_Parser $doc_block_parser = null)
     {
-        $this->docBlockParser = $docBlockParser ?: new DocBlockParser();
+        $this->doc_block_parser = $doc_block_parser ?: new Doc_Block_Parser();
     }
-
-    public function isSupported(): bool
+    public function is_supported(): bool
     {
-        return DocBlockParser::isEnabled();
+        return Doc_Block_Parser::is_enabled();
     }
-
-    public function setGenerator(Generator $generator): self
+    public function set_generator(Generator $generator): self
     {
         $this->generator = $generator;
-
-        $this->docBlockParser->setAliases($generator->getAliases());
-
+        $this->doc_block_parser->set_aliases($generator->get_aliases());
         return $this;
     }
-
     public function build(\Reflector $reflector, Context $context): array
     {
-        $aliases = $this->generator ? $this->generator->getAliases() : [];
-
+        $aliases = $this->generator ? $this->generator->get_aliases() : [];
         if (method_exists($reflector, 'getShortName') && method_exists($reflector, 'getName')) {
-            $aliases[strtolower((string) $reflector->getShortName())] = $reflector->getName();
+            $aliases[strtolower((string) $reflector->get_short_name())] = $reflector->get_name();
         }
-
         if ($context->with('scanned')) {
             $details = $context->scanned;
             foreach ($details['uses'] as $alias => $name) {
-                $aliasKey = strtolower((string) $alias);
-                if ($name != $alias && !array_key_exists($aliasKey, $aliases)) {
+                $alias_key = strtolower((string) $alias);
+                if ($name != $alias && !array_key_exists($alias_key, $aliases)) {
                     // real aliases only
                     $aliases[strtolower((string) $alias)] = $name;
                 }
             }
         }
-        $this->docBlockParser->setAliases($aliases);
-
-        if (method_exists($reflector, 'getDocComment') && ($comment = $reflector->getDocComment())) {
+        $this->doc_block_parser->set_aliases($aliases);
+        if (method_exists($reflector, 'getDocComment') && $comment = $reflector->get_doc_comment()) {
             $annotations = [];
-            foreach ($this->docBlockParser->fromComment($comment, $context) as $instance) {
-                if ($instance instanceof OA\AbstractAnnotation) {
+            foreach ($this->doc_block_parser->from_comment($comment, $context) as $instance) {
+                if ($instance instanceof OA\Abstract_Annotation) {
                     $annotations[] = $instance;
                 } else {
                     if ($context->is('other') === false) {
@@ -70,10 +57,8 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
                     $context->other[] = $instance;
                 }
             }
-
             return $annotations;
         }
-
         return [];
     }
 }

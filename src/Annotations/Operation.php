@@ -1,17 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-
+use Open_Api\Analysis;
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
 /**
  * Base class for <code>@OA\Get</code>,  <code>@OA\Post</code>,  <code>@OA\Put</code>,  etc.
  *
@@ -21,7 +18,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-abstract class Operation extends AbstractAnnotation
+abstract class Operation extends Abstract_Annotation
 {
     /**
      * Key in the OpenApi "Paths Object" for this operation.
@@ -29,7 +26,6 @@ abstract class Operation extends AbstractAnnotation
      * @var string
      */
     public $path = Generator::UNDEFINED;
-
     /**
      * A list of tags for API documentation control.
      *
@@ -38,7 +34,6 @@ abstract class Operation extends AbstractAnnotation
      * @var list<string>
      */
     public $tags = Generator::UNDEFINED;
-
     /**
      * Key in the OpenApi "Path Item Object" for this operation.
      *
@@ -47,14 +42,12 @@ abstract class Operation extends AbstractAnnotation
      * @var string
      */
     public $method = Generator::UNDEFINED;
-
     /**
      * A short summary of what the operation does.
      *
      * @var string
      */
     public $summary = Generator::UNDEFINED;
-
     /**
      * A verbose explanation of the operation behavior.
      *
@@ -63,14 +56,12 @@ abstract class Operation extends AbstractAnnotation
      * @var string
      */
     public $description = Generator::UNDEFINED;
-
     /**
      * Additional external documentation for this operation.
      *
      * @var ExternalDocumentation
      */
-    public $externalDocs = Generator::UNDEFINED;
-
+    public $external_docs = Generator::UNDEFINED;
     /**
      * Unique string used to identify the operation.
      *
@@ -80,8 +71,7 @@ abstract class Operation extends AbstractAnnotation
      *
      * @var string
      */
-    public $operationId = Generator::UNDEFINED;
-
+    public $operation_id = Generator::UNDEFINED;
     /**
      * A list of parameters that are applicable for this operation.
      *
@@ -96,7 +86,6 @@ abstract class Operation extends AbstractAnnotation
      * @var list<Parameter>
      */
     public $parameters = Generator::UNDEFINED;
-
     /**
      * The request body applicable for this operation.
      *
@@ -106,15 +95,13 @@ abstract class Operation extends AbstractAnnotation
      *
      * @var RequestBody
      */
-    public $requestBody = Generator::UNDEFINED;
-
+    public $request_body = Generator::UNDEFINED;
     /**
      * The list of possible responses as they are returned from executing this operation.
      *
      * @var list<Response>
      */
     public $responses = Generator::UNDEFINED;
-
     /**
      * A map of possible out-of band callbacks related to the parent operation.
      *
@@ -127,7 +114,6 @@ abstract class Operation extends AbstractAnnotation
      * @var array
      */
     public $callbacks = Generator::UNDEFINED;
-
     /**
      * Declares this operation to be deprecated.
      *
@@ -138,7 +124,6 @@ abstract class Operation extends AbstractAnnotation
      * @var bool
      */
     public $deprecated = Generator::UNDEFINED;
-
     /**
      * A declaration of which security mechanisms can be used for this operation.
      *
@@ -152,7 +137,6 @@ abstract class Operation extends AbstractAnnotation
      * @var array
      */
     public $security = Generator::UNDEFINED;
-
     /**
      * An alternative server array to service this operation.
      *
@@ -162,81 +146,53 @@ abstract class Operation extends AbstractAnnotation
      * @var list<Server>
      */
     public $servers = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */
     public static $_required = ['responses'];
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'path' => 'string',
-        'method' => 'string',
-        'tags' => '[string]',
-        'summary' => 'string',
-        'description' => 'string',
-        'deprecated' => 'boolean',
-    ];
-
+    public static $_types = ['path' => 'string', 'method' => 'string', 'tags' => '[string]', 'summary' => 'string', 'description' => 'string', 'deprecated' => 'boolean'];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Parameter::class => ['parameters'],
-        PathParameter::class => ['parameters'],
-        Response::class => ['responses', 'response'],
-        ExternalDocumentation::class => 'externalDocs',
-        Server::class => ['servers'],
-        RequestBody::class => 'requestBody',
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [Parameter::class => ['parameters'], Path_Parameter::class => ['parameters'], Response::class => ['responses', 'response'], External_Documentation::class => 'externalDocs', Server::class => ['servers'], Request_Body::class => 'requestBody', Attachable::class => ['attachables']];
     public function jsonSerialize(): \stdClass
     {
         $data = parent::jsonSerialize();
-
         unset($data->method);
         unset($data->path);
-
         // ensure security elements are object
         if (isset($data->security) && is_array($data->security)) {
             foreach ($data->security as $key => $scheme) {
                 $data->security[$key] = (object) $scheme;
             }
         }
-
         return $data;
     }
-
     #[\Override]
-    public function validate(?Analysis $analysis = null, string $version = OpenApi::DEFAULT_VERSION, ?object $context = null): bool
+    public function validate(?Analysis $analysis = null, string $version = Open_Api::DEFAULT_VERSION, ?object $context = null): bool
     {
-        $isValid = parent::validate($analysis, $version, $context);
-
-        if (!Generator::isDefault($this->responses)) {
+        $is_valid = parent::validate($analysis, $version, $context);
+        if (!Generator::is_default($this->responses)) {
             foreach ($this->responses as $response) {
-                if (!Generator::isDefault($response->response) && $response->response !== 'default' && preg_match('/^([12345]{1}\d{2})|([12345]{1}XX)$/', (string) $response->response) === 0) {
+                if (!Generator::is_default($response->response) && $response->response !== 'default' && preg_match('/^([12345]{1}\d{2})|([12345]{1}XX)$/', (string) $response->response) === 0) {
                     $this->_context->logger->warning('Invalid value "' . $response->response . '" for ' . $response->identity([]) . '->response, expecting "default", a HTTP Status Code or HTTP Status Code range definition in ' . $response->_context);
-                    $isValid = false;
+                    $is_valid = false;
                 }
             }
         }
-
-        if (!Generator::isDefault($this->operationId)) {
+        if (!Generator::is_default($this->operation_id)) {
             if (!property_exists($context, 'operationIds')) {
-                $context->operationIds = [];
+                $context->operation_ids = [];
             }
-
-            if (in_array($this->operationId, $context->operationIds)) {
-                $this->_context->logger->warning('operationId must be unique. Duplicate value found: "' . $this->operationId . '"');
-                $isValid = false;
+            if (in_array($this->operation_id, $context->operation_ids)) {
+                $this->_context->logger->warning('operationId must be unique. Duplicate value found: "' . $this->operation_id . '"');
+                $is_valid = false;
             }
-
-            $context->operationIds[] = $this->operationId;
+            $context->operation_ids[] = $this->operation_id;
         }
-
-        return $isValid;
+        return $is_valid;
     }
 }

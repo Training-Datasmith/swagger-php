@@ -1,55 +1,50 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Processors;
 
-namespace OpenApi\Processors;
-
-use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-use OpenApi\OpenApiException;
-
+use Open_Api\Analysis;
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
+use Open_Api\Open_Api_Exception;
 /**
  * Augment media type encodings.
  */
-class AugmentMediaType
+class Augment_Media_Type
 {
     public function __invoke(Analysis $analysis): void
     {
-        $mediaTypes = $analysis->getAnnotationsOfType(OA\MediaType::class);
-
-        foreach ($mediaTypes as $mediaType) {
-            $schema = $mediaType->schema;
+        $media_types = $analysis->get_annotations_of_type(OA\Media_Type::class);
+        foreach ($media_types as $media_type) {
+            $schema = $media_type->schema;
             if ($schema instanceof OA\Schema) {
-                if (!Generator::isDefault($schema->properties)) {
-                    $this->mergePropertyEncodings($mediaType, $schema->properties);
-                } elseif (!Generator::isDefault($schema->ref)) {
+                if (!Generator::is_default($schema->properties)) {
+                    $this->merge_property_encodings($media_type, $schema->properties);
+                } elseif (!Generator::is_default($schema->ref)) {
                     try {
-                        $refSchema = $analysis->openapi->ref($schema->ref);
-                    } catch (OpenApiException) {
+                        $ref_schema = $analysis->openapi->ref($schema->ref);
+                    } catch (Open_Api_Exception) {
                         // ignore
-                        $refSchema = null;
+                        $ref_schema = null;
                     }
-                    if ($refSchema instanceof OA\Schema && !Generator::isDefault($refSchema->properties)) {
-                        $this->mergePropertyEncodings($mediaType, $refSchema->properties);
+                    if ($ref_schema instanceof OA\Schema && !Generator::is_default($ref_schema->properties)) {
+                        $this->merge_property_encodings($media_type, $ref_schema->properties);
                     }
                 }
             }
         }
     }
-
     /**
      * @param array<OA\Property> $properties
      */
-    protected function mergePropertyEncodings(OA\MediaType $mediaType, array $properties): void
+    protected function merge_property_encodings(OA\Media_Type $media_type, array $properties): void
     {
         foreach ($properties as $property) {
             if ($property->encoding instanceof OA\Encoding) {
-                $mediaType->merge([$property->encoding], true);
+                $media_type->merge([$property->encoding], true);
             }
         }
     }

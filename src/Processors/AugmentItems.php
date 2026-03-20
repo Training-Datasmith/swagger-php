@@ -1,28 +1,24 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Processors;
 
-namespace OpenApi\Processors;
-
-use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
-use OpenApi\Context;
-
+use Open_Api\Analysis;
+use Open_Api\Annotations as OA;
+use Open_Api\Context;
 /**
  * Use the Schema context to extract useful information and inject that into the annotation.
  *
  * Merges properties.
  */
-class AugmentItems
+class Augment_Items
 {
     public function __invoke(Analysis $analysis): void
     {
-        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
-
+        $schemas = $analysis->get_annotations_of_type(OA\Schema::class);
         foreach ($schemas as $schema) {
             if ($schema->items instanceof OA\Items) {
                 $schema->type = 'array';

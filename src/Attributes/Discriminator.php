@@ -1,16 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Attributes;
 
-namespace OpenApi\Attributes;
-
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Discriminator extends OA\Discriminator
 {
@@ -20,18 +17,13 @@ class Discriminator extends OA\Discriminator
      * @param list<Attachable>|null     $attachables
      */
     public function __construct(
-        ?string $propertyName = null,
+        ?string $property_name = null,
         ?array $mapping = null,
-
         // abstract annotation
         ?array $x = null,
         ?array $attachables = null
-    ) {
-        parent::__construct([
-            'propertyName' => $propertyName ?? Generator::UNDEFINED,
-            'mapping' => $mapping ?? Generator::UNDEFINED,
-            'x' => $x ?? Generator::UNDEFINED,
-            'attachables' => $attachables ?? Generator::UNDEFINED,
-        ]);
+    )
+    {
+        parent::__construct(['propertyName' => $property_name ?? Generator::UNDEFINED, 'mapping' => $mapping ?? Generator::UNDEFINED, 'x' => $x ?? Generator::UNDEFINED, 'attachables' => $attachables ?? Generator::UNDEFINED]);
     }
 }

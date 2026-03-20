@@ -1,16 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Annotations;
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Analysis;
-use OpenApi\Generator;
-
+use Open_Api\Analysis;
+use Open_Api\Generator;
 /**
  * Describes a single operation parameter.
  *
@@ -20,7 +17,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class Parameter extends AbstractAnnotation
+class Parameter extends Abstract_Annotation
 {
     /**
      * The relative or absolute path to the endpoint.
@@ -30,14 +27,12 @@ class Parameter extends AbstractAnnotation
      * @var string|class-string|object
      */
     public $ref = Generator::UNDEFINED;
-
     /**
      * The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.
      *
      * @var string
      */
     public $parameter = Generator::UNDEFINED;
-
     /**
      * The (case-sensitive) name of the parameter.
      *
@@ -49,7 +44,6 @@ class Parameter extends AbstractAnnotation
      * @var string
      */
     public $name = Generator::UNDEFINED;
-
     /**
      * The location of the parameter.
      *
@@ -58,7 +52,6 @@ class Parameter extends AbstractAnnotation
      * @var string
      */
     public $in = Generator::UNDEFINED;
-
     /**
      * A brief description of the parameter.
      *
@@ -69,7 +62,6 @@ class Parameter extends AbstractAnnotation
      * @var string
      */
     public $description = Generator::UNDEFINED;
-
     /**
      * Determines whether this parameter is mandatory.
      *
@@ -79,14 +71,12 @@ class Parameter extends AbstractAnnotation
      * @var bool
      */
     public $required = Generator::UNDEFINED;
-
     /**
      * Specifies that a parameter is deprecated and should be transitioned out of usage.
      *
      * @var bool
      */
     public $deprecated = Generator::UNDEFINED;
-
     /**
      * Sets the ability to pass empty-valued parameters.
      *
@@ -98,8 +88,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var bool
      */
-    public $allowEmptyValue = Generator::UNDEFINED;
-
+    public $allow_empty_value = Generator::UNDEFINED;
     /**
      * Describes how the parameter value will be serialized depending on the type of the parameter value.
      *
@@ -108,7 +97,6 @@ class Parameter extends AbstractAnnotation
      * @var string
      */
     public $style = Generator::UNDEFINED;
-
     /**
      * When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.
      *
@@ -120,7 +108,6 @@ class Parameter extends AbstractAnnotation
      * @var bool
      */
     public $explode = Generator::UNDEFINED;
-
     /**
      * Determines whether the parameter value should allow reserved characters, as defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding.
      *
@@ -130,15 +117,13 @@ class Parameter extends AbstractAnnotation
      *
      * @var bool
      */
-    public $allowReserved = Generator::UNDEFINED;
-
+    public $allow_reserved = Generator::UNDEFINED;
     /**
      * The schema defining the type used for the parameter.
      *
      * @var Schema
      */
     public $schema = Generator::UNDEFINED;
-
     /**
      * Example of the media type.
      *
@@ -148,7 +133,6 @@ class Parameter extends AbstractAnnotation
      * To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.
      */
     public $example = Generator::UNDEFINED;
-
     /**
      * Examples of the parameter.
      *
@@ -159,7 +143,6 @@ class Parameter extends AbstractAnnotation
      * @var array<Examples>
      */
     public $examples = Generator::UNDEFINED;
-
     /**
      * A map containing the representations for the parameter.
      *
@@ -169,21 +152,18 @@ class Parameter extends AbstractAnnotation
      * @var array<MediaType>|JsonContent|XmlContent|Attachable
      */
     public $content = Generator::UNDEFINED;
-
     /**
      * Path-style parameters defined by RFC6570.
      *
      * @see [RFC6570](https://tools.ietf.org/html/rfc6570#section-3.2.7)
      */
     public $matrix = Generator::UNDEFINED;
-
     /**
      * Label style parameters defined by RFC6570.
      *
      * @see [RFC6570](https://tools.ietf.org/html/rfc6570#section-3.2.5)
      */
     public $label = Generator::UNDEFINED;
-
     /**
      * Form style parameters defined by RFC6570.
      *
@@ -192,7 +172,6 @@ class Parameter extends AbstractAnnotation
      * @see [RFC6570](https://tools.ietf.org/html/rfc6570#section-3.2.8)
      */
     public $form = Generator::UNDEFINED;
-
     /**
      * Simple style parameters defined by RFC6570.
      *
@@ -203,7 +182,6 @@ class Parameter extends AbstractAnnotation
      * @var array
      */
     public $simple = Generator::UNDEFINED;
-
     /**
      * Space separated array values.
      *
@@ -211,8 +189,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var array
      */
-    public $spaceDelimited = Generator::UNDEFINED;
-
+    public $space_delimited = Generator::UNDEFINED;
     /**
      * Pipe separated array values.
      *
@@ -220,72 +197,41 @@ class Parameter extends AbstractAnnotation
      *
      * @var array
      */
-    public $pipeDelimited = Generator::UNDEFINED;
-
+    public $pipe_delimited = Generator::UNDEFINED;
     /**
      * Provides a simple way of rendering nested objects using form parameters.
      */
-    public $deepObject = Generator::UNDEFINED;
-
+    public $deep_object = Generator::UNDEFINED;
     /**
      * @inheritdoc
      */
     public static $_required = ['name', 'in'];
-
     /**
      * @inheritdoc
      */
-    public static $_types = [
-        'name' => 'string',
-        'in' => ['query', 'header', 'path', 'cookie'],
-        'description' => 'string',
-        'style' => ['matrix', 'label', 'form', 'simple', 'spaceDelimited', 'pipeDelimited', 'deepObject'],
-        'required' => 'boolean',
-    ];
-
+    public static $_types = ['name' => 'string', 'in' => ['query', 'header', 'path', 'cookie'], 'description' => 'string', 'style' => ['matrix', 'label', 'form', 'simple', 'spaceDelimited', 'pipeDelimited', 'deepObject'], 'required' => 'boolean'];
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Schema::class => 'schema',
-        Examples::class => ['examples', 'example'],
-        Attachable::class => ['attachables'],
-    ];
-
+    public static $_nested = [Schema::class => 'schema', Examples::class => ['examples', 'example'], Attachable::class => ['attachables']];
     /**
      * @inheritdoc
      */
-    public static $_parents = [
-        Components::class,
-        PathItem::class,
-        Operation::class,
-        Get::class,
-        Post::class,
-        Put::class,
-        Delete::class,
-        Patch::class,
-        Head::class,
-        Options::class,
-        Trace::class,
-    ];
-
+    public static $_parents = [Components::class, Path_Item::class, Operation::class, Get::class, Post::class, Put::class, Delete::class, Patch::class, Head::class, Options::class, Trace::class];
     #[\Override]
-    public function validate(?Analysis $analysis = null, string $version = OpenApi::DEFAULT_VERSION, ?object $context = null): bool
+    public function validate(?Analysis $analysis = null, string $version = Open_Api::DEFAULT_VERSION, ?object $context = null): bool
     {
-        $isValid = parent::validate($analysis, $version, $context);
-
-        if (Generator::isDefault($this->ref)) {
+        $is_valid = parent::validate($analysis, $version, $context);
+        if (Generator::is_default($this->ref)) {
             if ($this->in === 'body') {
-                if (Generator::isDefault($this->schema)) {
+                if (Generator::is_default($this->schema)) {
                     $this->_context->logger->warning('Field "schema" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
-                    $isValid = false;
+                    $is_valid = false;
                 }
             }
         }
-
-        return $isValid;
+        return $is_valid;
     }
-
     #[\Override]
     public function identity(?array $properties = []): string
     {

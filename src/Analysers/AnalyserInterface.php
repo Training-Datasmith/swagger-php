@@ -1,18 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Analysers;
 
-namespace OpenApi\Analysers;
-
-use OpenApi\Analysis;
-use OpenApi\Context;
-use OpenApi\GeneratorAwareInterface;
-
-interface AnalyserInterface extends GeneratorAwareInterface
+use Open_Api\Analysis;
+use Open_Api\Context;
+use Open_Api\Generator_Aware_Interface;
+interface Analyser_Interface extends Generator_Aware_Interface
 {
-    public function fromFile(string $filename, Context $context): Analysis;
+    public function from_file(string $filename, Context $context): Analysis;
 }

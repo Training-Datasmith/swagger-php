@@ -1,106 +1,87 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Processors;
 
-namespace OpenApi\Processors;
-
-use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-
+use Open_Api\Analysis;
+use Open_Api\Annotations as OA;
+use Open_Api\Generator;
 /**
  * Ensures that all tags used on operations also exist in the global <code>tags</code> list.
  */
-class AugmentTags
+class Augment_Tags
 {
     public function __construct(
         /** @var array<string> */
         protected array $whitelist = [],
-        protected bool $withDescription = true
-    ) {
+        protected bool $with_description = true
+    )
+    {
     }
-
     /**
      * Whitelist tags to keep even if not used. <code>*</code> may be used to keep all unused.
      */
-    public function setWhitelist(array $whitelist): AugmentTags
+    public function set_whitelist(array $whitelist): Augment_Tags
     {
         $this->whitelist = $whitelist;
-
         return $this;
     }
-
     /**
      * Enables/disables generation of default tag descriptions.
      */
-    public function setWithDescription(bool $withDescription): AugmentTags
+    public function set_with_description(bool $with_description): Augment_Tags
     {
-        $this->withDescription = $withDescription;
-
+        $this->with_description = $with_description;
         return $this;
     }
-
     public function __invoke(Analysis $analysis): void
     {
-        $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
-
-        $usedTagNames = [];
+        $operations = $analysis->get_annotations_of_type(OA\Operation::class);
+        $used_tag_names = [];
         foreach ($operations as $operation) {
-            if (!Generator::isDefault($operation->tags)) {
-                $usedTagNames = array_merge($usedTagNames, $operation->tags);
+            if (!Generator::is_default($operation->tags)) {
+                $used_tag_names = array_merge($used_tag_names, $operation->tags);
             }
         }
-        $usedTagNames = array_unique($usedTagNames);
-
-        $declaredTags = [];
-        if (!Generator::isDefault($analysis->openapi->tags)) {
+        $used_tag_names = array_unique($used_tag_names);
+        $declared_tags = [];
+        if (!Generator::is_default($analysis->openapi->tags)) {
             foreach ($analysis->openapi->tags as $tag) {
-                $declaredTags[$tag->name] = $tag;
+                $declared_tags[$tag->name] = $tag;
             }
         }
-        if ($declaredTags) {
+        if ($declared_tags) {
             // last one wins
-            $analysis->openapi->tags = array_values($declaredTags);
+            $analysis->openapi->tags = array_values($declared_tags);
         }
-
         // Add a tag for each tag that is used in operations but not declared in the global tags
-        if ($usedTagNames) {
-            $declatedTagNames = array_keys($declaredTags);
-            foreach ($usedTagNames as $tagName) {
-                if (!in_array($tagName, $declatedTagNames)) {
-                    $analysis->openapi->merge([new OA\Tag([
-                        'name' => $tagName,
-                        'description' => $this->withDescription
-                            ? $tagName
-                            : Generator::UNDEFINED,
-                    ])]);
+        if ($used_tag_names) {
+            $declated_tag_names = array_keys($declared_tags);
+            foreach ($used_tag_names as $tag_name) {
+                if (!in_array($tag_name, $declated_tag_names)) {
+                    $analysis->openapi->merge([new OA\Tag(['name' => $tag_name, 'description' => $this->with_description ? $tag_name : Generator::UNDEFINED])]);
                 }
             }
         }
-
         // clear invalid parents
-        foreach ($declaredTags as $tag) {
-            if (!array_key_exists($tag->parent, $declaredTags)) {
+        foreach ($declared_tags as $tag) {
+            if (!array_key_exists($tag->parent, $declared_tags)) {
                 $tag->parent = Generator::UNDEFINED;
             }
         }
-
-        $this->removeUnusedTags($usedTagNames, $declaredTags, $analysis);
+        $this->remove_unused_tags($used_tag_names, $declared_tags, $analysis);
     }
-
-    private function removeUnusedTags(array $usedTagNames, array $declaredTags, Analysis $analysis): void
+    private function remove_unused_tags(array $used_tag_names, array $declared_tags, Analysis $analysis): void
     {
         if (in_array('*', $this->whitelist)) {
             return;
         }
-
-        $tagsToKeep = array_merge($usedTagNames, $this->whitelist);
-        foreach ($declaredTags as $tag) {
-            if (in_array($tag->name, $tagsToKeep)) {
+        $tags_to_keep = array_merge($used_tag_names, $this->whitelist);
+        foreach ($declared_tags as $tag) {
+            if (in_array($tag->name, $tags_to_keep)) {
                 continue;
             }
             if (false === $index = array_search($tag, $analysis->openapi->tags, true)) {

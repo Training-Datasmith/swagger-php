@@ -1,67 +1,57 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * @license Apache 2.0
  */
+namespace Open_Api\Processors;
 
-namespace OpenApi\Processors;
-
-use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
-use OpenApi\Context;
-use OpenApi\Generator;
-use OpenApi\GeneratorAwareInterface;
-use OpenApi\GeneratorAwareTrait;
-
+use Open_Api\Analysis;
+use Open_Api\Annotations as OA;
+use Open_Api\Context;
+use Open_Api\Generator;
+use Open_Api\Generator_Aware_Interface;
+use Open_Api\Generator_Aware_Trait;
 /**
  * Use the RequestBody context to extract useful information and inject that into the annotation.
  */
-class AugmentRequestBody implements GeneratorAwareInterface
+class Augment_Request_Body implements Generator_Aware_Interface
 {
-    use GeneratorAwareTrait;
-
+    use Generator_Aware_Trait;
     public function __invoke(Analysis $analysis): void
     {
-        $requestBodies = $analysis->getAnnotationsOfType(OA\RequestBody::class);
-
-        $this->augmentRequestBody($analysis, $requestBodies);
+        $request_bodies = $analysis->get_annotations_of_type(OA\Request_Body::class);
+        $this->augment_request_body($analysis, $request_bodies);
     }
-
     /**
      * @param array<OA\RequestBody> $requestBodies
      */
-    protected function augmentRequestBody(Analysis $analysis, array $requestBodies): void
+    protected function augment_request_body(Analysis $analysis, array $request_bodies): void
     {
-        foreach ($requestBodies as $requestBody) {
-            if (!$requestBody->isRoot(OA\RequestBody::class)) {
+        foreach ($request_bodies as $request_body) {
+            if (!$request_body->is_root(OA\Request_Body::class)) {
                 continue;
             }
-
-            $context = $requestBody->_context;
-            if (Generator::isDefault($requestBody->request)) {
+            $context = $request_body->_context;
+            if (Generator::is_default($request_body->request)) {
                 if ($context->is('class')) {
-                    $requestBody->request = $requestBody->_context->class;
+                    $request_body->request = $request_body->_context->class;
                 } elseif ($context->is('interface')) {
-                    $requestBody->request = $requestBody->_context->interface;
+                    $request_body->request = $request_body->_context->interface;
                 } elseif ($context->is('trait')) {
-                    $requestBody->request = $requestBody->_context->trait;
+                    $request_body->request = $request_body->_context->trait;
                 } elseif ($context->is('enum')) {
-                    $requestBody->request = $requestBody->_context->enum;
+                    $request_body->request = $request_body->_context->enum;
                 }
             }
-
             if ($context->reflector instanceof \ReflectionParameter) {
                 $schema = new OA\Schema(['_context' => new Context(['reflector' => $context->reflector], $context)]);
-                $this->generator->getTypeResolver()->augmentSchemaType($analysis, $schema, OA\RequestBody::class);
-
-                if (Generator::isDefault($requestBody->ref)) {
-                    $requestBody->ref = $schema->ref;
+                $this->generator->get_type_resolver()->augment_schema_type($analysis, $schema, OA\Request_Body::class);
+                if (Generator::is_default($request_body->ref)) {
+                    $request_body->ref = $schema->ref;
                 }
-
-                if (Generator::isDefault($requestBody->required)) {
-                    $requestBody->required = !$schema->isNullable();
+                if (Generator::is_default($request_body->required)) {
+                    $request_body->required = !$schema->is_nullable();
                 }
             }
         }
