@@ -1,18 +1,18 @@
 <meta-storm xmlns="meta-storm">
     <definitions>
-        <classConstructor class="\OpenApi\Attributes\Property" argument="0">
+        <classConstructor class="\Open_Api\Attributes\Property" argument="0">
             <collection name="zircote/swagger-php:types"/>
         </classConstructor>
-        <classConstructor class="\OpenApi\Attributes\ParameterTrait" argument="3">
+        <classConstructor class="\Open_Api\Attributes\Parameter_Trait" argument="3">
             <collection name="zircote/swagger-php:path-in"/>
         </classConstructor>
-        <classConstructor class="\OpenApi\Attributes\SecurityScheme" argument="1">
+        <classConstructor class="\Open_Api\Attributes\Security_Scheme" argument="1">
             <collection name="zircote/swagger-php:path-in"/>
         </classConstructor>
-        <classConstructor class="\OpenApi\Attributes\MediaType" argument="0">
+        <classConstructor class="\Open_Api\Attributes\Media_Type" argument="0">
             <collection name="GLOBAL:media-types"/>
         </classConstructor>
-        <classMethod class="\OpenApi\Annotations\AbstractAnnotation" method="__construct" argument="0" targetInArray="key">
+        <classMethod class="\Open_Api\Annotations\Abstract_Annotation" method="__construct" argument="0" targetInArray="key">
             <properties xpath="$containingClass" />
         </classMethod>
     </definitions>
